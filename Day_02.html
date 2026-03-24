@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 2 - 用财务报表锻炼五大神功</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: #f5f6f8;
+            color: #2c3e50;
+            line-height: 1.8;
+            padding: 20px;
+        }
+
+        .container { max-width: 800px; margin: 0 auto; }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1a5276 0%, #2e86c1 100%);
+            color: #fff;
+            padding: 32px 28px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(26, 82, 118, 0.25);
+        }
+        .header .tag {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+        .header h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; }
+        .header .subtitle { font-size: 15px; opacity: 0.85; }
+        .header .meta { display: flex; gap: 20px; margin-top: 16px; font-size: 13px; opacity: 0.7; }
+
+        /* Nav */
+        .nav-bar {
+            display: flex; gap: 10px; margin-bottom: 20px; align-items: center;
+        }
+        .nav-bar a {
+            padding: 8px 18px; border-radius: 8px; text-decoration: none;
+            font-size: 13px; font-weight: 600; transition: all 0.2s;
+        }
+        .nav-bar a.home { background: #fff; color: #1a5276; border: 1px solid #d4e6f1; }
+        .nav-bar a.home:hover { background: #eaf2f8; }
+        .nav-bar a.prev { background: #fff; color: #2e86c1; border: 1px solid #d4e6f1; }
+        .nav-bar a.prev:hover { background: #eaf2f8; }
+        .nav-bar a.next { background: #2e86c1; color: #fff; border: 1px solid #2e86c1; }
+        .nav-bar a.next:hover { opacity: 0.9; }
+        .nav-bar a.current { background: #ecf0f1; color: #7f8c8d; cursor: default; }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-top: 24px; margin-bottom: 40px; padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+        }
+        .bottom-nav a {
+            display: flex; align-items: center; gap: 8px;
+            padding: 12px 20px; border-radius: 10px; text-decoration: none;
+            font-size: 14px; font-weight: 600; transition: all 0.2s;
+            background: #fff; border: 1px solid #d4e6f1;
+        }
+        .bottom-nav a:hover { background: #eaf2f8; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+        .bottom-nav a.next-link { background: #2e86c1; color: #fff; border-color: #2e86c1; }
+        .bottom-nav a.next-link:hover { opacity: 0.9; }
+        .bottom-nav a .nav-arrow { font-size: 18px; }
+        .bottom-nav .nav-text { display: flex; flex-direction: column; }
+        .bottom-nav .nav-text small { font-size: 11px; font-weight: 400; opacity: 0.7; }
+
+        /* Next Preview */
+        .goal-card {
+            background: #fff; border-left: 4px solid #2e86c1;
+            padding: 20px 24px; border-radius: 0 12px 12px 0;
+            margin-bottom: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        .goal-card h2 { font-size: 16px; color: #1a5276; margin-bottom: 10px; }
+        .goal-card ul { list-style: none; padding: 0; }
+        .goal-card ul li {
+            padding: 4px 0; padding-left: 20px; position: relative; font-size: 14px;
+        }
+        .goal-card ul li::before {
+            content: "?"; position: absolute; left: 0; color: #2e86c1; font-weight: 700;
+        }
+
+        /* Collapsible Sections */
+        .section {
+            background: #fff; border-radius: 12px; margin-bottom: 14px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06); overflow: hidden; transition: box-shadow 0.3s;
+        }
+        .section:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .section-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 24px; cursor: pointer; user-select: none; transition: background 0.2s;
+        }
+        .section-header:hover { background: #f8f9fb; }
+        .section-header .left { display: flex; align-items: center; gap: 14px; }
+        .section-number {
+            width: 32px; height: 32px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 15px; color: #fff; flex-shrink: 0;
+        }
+        .s1 .section-number { background: #c0392b; }
+        .s2 .section-number { background: #2e86c1; }
+        .s3 .section-number { background: #27ae60; }
+        .s4 .section-number { background: #8e44ad; }
+        .s5 .section-number { background: #e67e22; }
+        .s6 .section-number { background: #16a085; }
+
+        .section-header h3 { font-size: 16px; font-weight: 600; color: #2c3e50; }
+        .section-header .time {
+            font-size: 12px; color: #95a5a6; background: #f0f0f0;
+            padding: 2px 10px; border-radius: 10px; flex-shrink: 0;
+        }
+        .section-header .arrow {
+            font-size: 14px; color: #bdc3c7; transition: transform 0.3s;
+            flex-shrink: 0; margin-left: 12px;
+        }
+        .section.open .arrow { transform: rotate(180deg); }
+        .section-body { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .section.open .section-body { max-height: 5000px; }
+        .section-content { padding: 0 24px 24px 24px; }
+
+        /* Content Styles */
+        .section-content p { margin-bottom: 12px; font-size: 15px; color: #34495e; }
+        .section-content strong { color: #1a5276; }
+        .section-content h4 {
+            font-size: 15px; color: #2c3e50; margin: 18px 0 8px 0;
+            padding-bottom: 6px; border-bottom: 1px solid #eee;
+        }
+        .section-content h4:first-child { margin-top: 0; }
+
+        .highlight-box {
+            background: #fef9e7; border-left: 4px solid #f39c12;
+            padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0;
+            font-size: 14px; color: #7d6608;
+        }
+        .danger-box {
+            background: #fdedec; border-left: 4px solid #e74c3c;
+            padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0;
+            font-size: 14px; color: #922b21;
+        }
+        .insight-box {
+            background: #eaf2f8; border-left: 4px solid #2e86c1;
+            padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0;
+            font-size: 14px; color: #1a5276;
+        }
+        .success-box {
+            background: #eafaf1; border-left: 4px solid #27ae60;
+            padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0;
+            font-size: 14px; color: #1e8449;
+        }
+        .story-card {
+            background: #f8f9fb; border-radius: 10px; padding: 16px 18px; margin: 14px 0;
+        }
+        .story-card .story-title {
+            font-weight: 700; color: #8e44ad; margin-bottom: 6px; font-size: 14px;
+        }
+        .story-card p { font-size: 14px; margin-bottom: 6px; }
+
+        /* Formula Box */
+        .formula-box {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: #fff; padding: 18px 22px; border-radius: 10px; margin: 14px 0;
+            text-align: center; font-size: 16px; font-weight: 600; letter-spacing: 1px;
+        }
+        .formula-box small { font-weight: 400; font-size: 13px; opacity: 0.7; display: block; margin-top: 6px; }
+
+        /* Tables */
+        .content-table {
+            width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px;
+        }
+        .content-table th {
+            background: #2c3e50; color: #fff; padding: 10px 14px;
+            text-align: left; font-weight: 600;
+        }
+        .content-table th:first-child { border-radius: 8px 0 0 0; }
+        .content-table th:last-child { border-radius: 0 8px 0 0; }
+        .content-table td { padding: 10px 14px; border-bottom: 1px solid #ecf0f1; color: #34495e; }
+        .content-table tr:last-child td { border-bottom: none; }
+        .content-table tr:nth-child(even) { background: #f8f9fb; }
+
+        /* Bullet Lists */
+        .bullet-list { list-style: none; padding: 0; }
+        .bullet-list li {
+            padding: 5px 0 5px 22px; position: relative; font-size: 14px;
+        }
+        .bullet-list li::before {
+            content: ""; position: absolute; left: 6px; top: 14px;
+            width: 6px; height: 6px; border-radius: 50%; background: #2e86c1;
+        }
+        .danger-list li::before { background: #e74c3c; }
+        .green-list li::before { background: #27ae60; }
+        .purple-list li::before { background: #8e44ad; }
+
+        .numbered-list { list-style: none; padding: 0; counter-reset: item; }
+        .numbered-list li {
+            padding: 5px 0 5px 30px; position: relative; font-size: 14px; counter-increment: item;
+        }
+        .numbered-list li::before {
+            content: counter(item); position: absolute; left: 4px; top: 5px;
+            width: 20px; height: 20px; border-radius: 50%;
+            background: #e74c3c; color: #fff; font-size: 12px; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* Quiz Section */
+        .quiz-section {
+            background: #fff; border-radius: 12px; padding: 24px;
+            margin-bottom: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        .quiz-section h2 {
+            font-size: 18px; color: #1a5276; margin-bottom: 20px;
+            padding-bottom: 10px; border-bottom: 2px solid #eaf2f8;
+        }
+        .quiz-item { margin-bottom: 20px; padding: 16px; background: #f8f9fb; border-radius: 10px; }
+        .quiz-question {
+            font-weight: 600; font-size: 15px; color: #2c3e50;
+            margin-bottom: 12px; display: flex; gap: 8px;
+        }
+        .quiz-num { color: #e67e22; flex-shrink: 0; }
+        .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+        .quiz-option {
+            display: flex; align-items: flex-start; gap: 10px;
+            padding: 10px 14px; background: #fff; border: 2px solid #ecf0f1;
+            border-radius: 8px; cursor: pointer; transition: all 0.2s;
+            font-size: 14px; line-height: 1.5;
+        }
+        .quiz-option:hover { border-color: #bdc3c7; background: #f8f9fb; }
+        .quiz-option.selected { border-color: #2e86c1; background: #eaf2f8; }
+        .quiz-option.correct { border-color: #27ae60; background: #eafaf1; }
+        .quiz-option.wrong { border-color: #e74c3c; background: #fdedec; }
+        .quiz-option .radio {
+            width: 18px; height: 18px; border: 2px solid #bdc3c7; border-radius: 50%;
+            flex-shrink: 0; margin-top: 2px; position: relative; transition: all 0.2s;
+        }
+        .quiz-option.selected .radio { border-color: #2e86c1; }
+        .quiz-option.selected .radio::after {
+            content: ""; position: absolute; top: 3px; left: 3px;
+            width: 8px; height: 8px; border-radius: 50%; background: #2e86c1;
+        }
+        .quiz-option.correct .radio { border-color: #27ae60; }
+        .quiz-option.correct .radio::after {
+            content: ""; position: absolute; top: 3px; left: 3px;
+            width: 8px; height: 8px; border-radius: 50%; background: #27ae60;
+        }
+        .quiz-option.wrong .radio { border-color: #e74c3c; }
+        .quiz-option.wrong .radio::after {
+            content: ""; position: absolute; top: 3px; left: 3px;
+            width: 8px; height: 8px; border-radius: 50%; background: #e74c3c;
+        }
+        .quiz-explanation {
+            display: none; margin-top: 10px; padding: 10px 14px;
+            border-radius: 8px; font-size: 13px; line-height: 1.6;
+        }
+        .quiz-explanation.show { display: block; }
+        .quiz-explanation.correct-exp {
+            background: #eafaf1; color: #1e8449; border-left: 3px solid #27ae60;
+        }
+        .quiz-explanation.wrong-exp {
+            background: #fdedec; color: #922b21; border-left: 3px solid #e74c3c;
+        }
+        .quiz-submit {
+            display: block; width: 100%; padding: 14px;
+            background: linear-gradient(135deg, #1a5276, #2e86c1);
+            color: #fff; border: none; border-radius: 10px;
+            font-size: 16px; font-weight: 600; cursor: pointer;
+            transition: opacity 0.2s; margin-top: 8px;
+        }
+        .quiz-submit:hover { opacity: 0.9; }
+        .quiz-submit:disabled { background: #bdc3c7; cursor: not-allowed; }
+        .quiz-result {
+            display: none; text-align: center; padding: 20px; margin-top: 16px;
+            border-radius: 10px; font-size: 18px; font-weight: 700;
+        }
+        .quiz-result.show { display: block; }
+        .quiz-result.great { background: #eafaf1; color: #1e8449; }
+        .quiz-result.good { background: #eaf2f8; color: #1a5276; }
+        .quiz-result.retry { background: #fdedec; color: #922b21; }
+
+        /* Summary */
+        .summary-card {
+            background: linear-gradient(135deg, #f8f9fb 0%, #eaf2f8 100%);
+            border-radius: 12px; padding: 24px; margin-bottom: 24px;
+            border: 1px solid #d4e6f1;
+        }
+        .summary-card h2 { font-size: 16px; color: #1a5276; margin-bottom: 14px; }
+        .summary-card blockquote {
+            margin: 0; padding: 10px 0; font-size: 14px; color: #2c3e50;
+            border-left: 3px solid #2e86c1; padding-left: 16px; margin-bottom: 8px;
+        }
+
+        /* Next Preview */
+        .next-card {
+            background: #fff; border: 2px dashed #bdc3c7; border-radius: 12px;
+            padding: 20px 24px; text-align: center; margin-bottom: 40px;
+        }
+        .next-card h3 { color: #7f8c8d; font-size: 15px; margin-bottom: 8px; }
+        .next-card p { color: #95a5a6; font-size: 14px; }
+
+        /* Toolbar */
+        .toolbar { display: flex; justify-content: flex-end; margin-bottom: 14px; gap: 10px; }
+        .toolbar button {
+            padding: 6px 16px; border: 1px solid #d4e6f1; background: #fff;
+            border-radius: 8px; font-size: 13px; color: #2e86c1; cursor: pointer; transition: all 0.2s;
+        }
+        .toolbar button:hover { background: #eaf2f8; }
+
+        /* Key Concept Tag */
+        .key-tag {
+            display: inline-block; background: #eaf2f8; color: #1a5276;
+            padding: 2px 10px; border-radius: 4px; font-size: 13px; font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+    <div class="header">
+        <span class="tag">学习日推 · Day 2</span>
+        <h1>用财务报表锻炼五大神功</h1>
+        <div class="subtitle">《财报就像一本故事书》第2章 · P20-P34</div>
+        <div class="meta">
+            <span>预计用时 30-50 分钟</span>
+            <span>2026-03-24</span>
+        </div>
+    </div>
+
+    <!-- Nav -->
+    <div class="nav-bar">
+        <a class="home" href="index.html">📖 目录</a>
+        <a class="prev" href="Day_01.html">← Day 1</a>
+        <a class="current">Day 2</a>
+    </div>
+
+    <!-- Goal Card -->
+    <div class="goal-card">
+        <h2>今日学习目标</h2>
+        <p style="font-size:14px; margin-bottom:10px; color:#555;">建立财报分析的完整方法论框架——理解"一个坚持、两个方法、三类活动、四份报表、五项修炼"的逻辑体系。学完后你应该能回答：</p>
+        <ul>
+            <li>财报分析的两种基本方法是什么？</li>
+            <li>企业的三大活动分别是什么？它们和财报什么关系？</li>
+            <li>四份财务报表各自"负责"什么？</li>
+        </ul>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <button onclick="toggleAll(true)">全部展开</button>
+        <button onclick="toggleAll(false)">全部收起</button>
+    </div>
+
+    <!-- Section 1 -->
+    <div class="section s1" id="sec1">
+        <div class="section-header" onclick="toggle('sec1')">
+            <div class="left">
+                <div class="section-number">1</div>
+                <h3>一个坚持——坚持正派武功</h3>
+            </div>
+            <span class="time">8 分钟</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="section-body">
+            <div class="section-content">
+                <h4>课责性的故事</h4>
+                <p>《新约圣经·马太福音》中有个故事：主人出门前分别给三个仆人 <strong>5000、2000、1000</strong> 银子。</p>
+
+                <table class="content-table">
+                    <tr><th>仆人</th><th>行动</th><th>结果</th><th>主人的反应</th></tr>
+                    <tr><td>领 5000 的</td><td>拿去做买卖</td><td>赚了 5000</td><td style="color:#27ae60;">赞赏，交更多事管理</td></tr>
+                    <tr><td>领 2000 的</td><td>照样做买卖</td><td>赚了 2000</td><td style="color:#27ae60;">十分喜悦</td></tr>
+                    <tr><td>领 1000 的</td><td>把银子埋在地下</td><td>原封不动</td><td style="color:#e74c3c;">斥为"又恶又懒"，夺走银子</td></tr>
+                </table>
+
+                <div class="highlight-box">
+                    <strong>主人的逻辑</strong>："凡有的，还要加给他，叫他有余；没有的，连他所有的也要夺过来。"<br>
+                    这就是资本市场的逻辑——<strong>资本追求提升投资报酬率的机会，强者获得更多资本，弱者被剥夺资本</strong>。
+                </div>
+
+                <h4>巴菲特收购麦克林（McLane）</h4>
+                <p>2003年，巴菲特得知沃尔玛有意出售年营收 <strong>230亿美元</strong> 的非核心事业。交易极其简单：</p>
+
+                <ul class="bullet-list">
+                    <li>巴菲特和沃尔玛CFO面谈两小时 → 当场同意收购金额</li>
+                    <li>CFO打了一个电话请示CEO → 交易完成</li>
+                    <li><strong>29天后，15亿美元直接汇入沃尔玛账户，没有投资银行介入</strong></li>
+                </ul>
+
+                <p>为什么能这么快？因为巴菲特<strong>相信沃尔玛财报上的每一个数字</strong>——沃尔玛多年被《财富》杂志评为"最受尊敬的企业"，诚信和经营能力有高度信心。事后证明，沃尔玛提供的各项数据<strong>准确无误</strong>。</p>
+
+                <div class="insight-box">
+                    <strong>对你的意义</strong>：诚信是最好的"交易加速器"。选股时，优先选择管理层诚信的公司。如何判断诚信？Day 1 已经学过——看审计意见、是否频繁换审计师、关联交易是否过多。
+                </div>
+
+                <h4>不诚信的三大隐藏代价</h4>
+                <table class="content-table">
+                    <tr><th>#</th><th>代价</th><th>具体表现</th></tr>
+                    <tr><td>1</td><td>声誉受损</td><td>消费者因不诚实行为减少消费，销售额下跌</td></tr>
+                    <tr><td>2</td><td>劣币驱逐良币</td><td>诚实员工离职，不诚实员工留下，监督成本大幅增加</td></tr>
+                    <tr><td>3</td><td>生产力降低</td><td>加强监控后，员工产生不被信任的不满</td></tr>
+                </table>
+
+                <div class="success-box">
+                    <strong>台积电张忠谋</strong>："好的道德等于好的生意（Good ethics is good business）。"<br>
+                    <strong>台积电求才标准</strong>："志同道合"。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="section s2" id="sec2">
+        <div class="section-header" onclick="toggle('sec2')">
+            <div class="left">
+                <div class="section-number">2</div>
+                <h3>两个方法——表达事实 + 解释变化</h3>
+            </div>
+            <span class="time">10 分钟</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="section-body">
+            <div class="section-content">
+                <p>财报分析的两个基本方法，对应两个核心概念：</p>
+
+                <table class="content-table">
+                    <tr><th>概念</th><th>含义</th><th>例子</th><th>要求</th></tr>
+                    <tr>
+                        <td><strong>存量（Stock）</strong></td>
+                        <td>特定<strong>时点</strong>企业的财务资源</td>
+                        <td>有多少现金、多少应收账款</td>
+                        <td>确认存在且数量正确</td>
+                    </tr>
+                    <tr>
+                        <td><strong>流量（Flow）</strong></td>
+                        <td>特定<strong>期间</strong>内财务状况的变化</td>
+                        <td>每年的营收和获利金额</td>
+                        <td>能解释变化的原因</td>
+                    </tr>
+                </table>
+
+                <div class="formula-box">
+                    存量 = 企业的"照片"（某个瞬间）&nbsp;&nbsp;|&nbsp;&nbsp;流量 = 企业的"录像"（一段时间）
+                </div>
+
+                <h4>财报是"问问题"的工具，不是"得答案"的工具</h4>
+                <p>财报的主要功能并不是直接回答问题，而是<strong>帮助经理人/投资人提出问题</strong>。</p>
+
+                <div class="story-card">
+                    <div class="story-title">台塑王永在的"第六问"</div>
+                    <p>台塑副董事长王永在说："所有的管理现象，只要抽丝剥茧，当你问到<strong>第六个问题</strong>时，几乎都能彻底理清。"</p>
+                </div>
+
+                <div class="story-card">
+                    <div class="story-title">郭台铭的名言</div>
+                    <p>"经理人必须不断地拆解问题，直到深入了解每个细节为止，因为<strong>魔鬼都躲在细节里</strong>。"</p>
+                </div>
+
+                <div class="highlight-box">
+                    <strong>举例</strong>：沃尔玛的总营收来源非常广，如果想知道营收变化的原因，可以按地理区域（美洲 vs 欧洲）、顾客别（一般消费者 vs 大盘商）、产品别（日用品 vs 生鲜食品）等不同角度切入。<br><br>
+                    财务报表是<strong>管理阶层用来问问题的工具</strong>，而不是得到答案的工具。管理问题的真正答案，必须依赖经理人更细致深入的剖析。
+                </div>
+
+                <div class="insight-box">
+                    <strong>对你的意义</strong>：看财报不是看一眼数字就下结论。看到一个数字异常（比如营收突然下降），要不断追问"为什么"——是行业整体不行？竞争对手抢了市场？还是产品质量出了问题？
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="section s3" id="sec3">
+        <div class="section-header" onclick="toggle('sec3')">
+            <div class="left">
+                <div class="section-number">3</div>
+                <h3>三类活动——经营、投资、筹资</h3>
+            </div>
+            <span class="time">10 分钟</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="section-body">
+            <div class="section-content">
+                <p>作者用<strong>汉高祖刘邦</strong>的创业故事来比喻企业的三大活动：</p>
+
+                <table class="content-table">
+                    <tr>
+                        <th style="width:90px;">企业活动</th>
+                        <th style="width:90px;">历史代表</th>
+                        <th style="width:100px;">现代含义</th>
+                        <th>决定什么</th>
+                    </tr>
+                    <tr>
+                        <td><strong>投资活动</strong></td>
+                        <td>张良（策略规划）</td>
+                        <td>买卖资产、对外投资</td>
+                        <td>企业的<strong style="color:#8e44ad;">未来</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>筹资活动</strong></td>
+                        <td>萧何（后勤支持）</td>
+                        <td>借债、发行股票、分红</td>
+                        <td>企业的<strong style="color:#e74c3c;">风险</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>经营活动</strong></td>
+                        <td>韩信（市场占有）</td>
+                        <td>生产、销售、服务</td>
+                        <td>企业的<strong style="color:#27ae60;">本质</strong></td>
+                    </tr>
+                </table>
+
+                <div class="story-card">
+                    <div class="story-title">刘邦的成功秘诀</div>
+                    <p>刘邦说："夫运筹策帷帐之中，吾胜于千里之外，吾不如张良；镇国家，抚百姓，给馈饷，不绝粮道，吾不如萧何；连百万之军，战必胜，攻必取，吾不如韩信。此三者，皆人杰也，<strong>吾能用之，此吾所以取天下也</strong>。"</p>
+                    <p>成功的关键不在于自己什么都懂，而在于<strong>让对的人做对的事</strong>。</p>
+                </div>
+
+                <h4>三个关键认知</h4>
+                <ul class="bullet-list">
+                    <li><strong>投资活动</strong>：不只是"把钱花在哪"，也包括<strong>把错误投资收回来</strong>的决策（divest）</li>
+                    <li><strong>筹资活动</strong>：现代企业的"粮道"就是资金流，资金充足流畅，经营或投资活动才能可攻可守</li>
+                    <li><strong>经营活动</strong>：重点是营收及获利的持续增长，以及从顾客端顺利收取现金</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <strong>三者关系</strong>：成功的经营活动 → 企业有广阔的投资空间 → 股东/银行乐于提供融资。<br><br>
+                    会计数字只是结果，<strong>管理活动才是组织创造价值的原因</strong>。分析财务报表不能只看死板的数字，还要看到产生数字的管理活动。
+                </div>
+
+                <div class="danger-box">
+                    ⭐ <strong>必须记住</strong>：经营活动决定企业的本质，投资活动决定企业的未来，筹资活动决定企业的风险。
+                </div>
+
+                <div class="insight-box">
+                    <strong>对你的意义</strong>：以后看任何公司，先问三个问题——<br>
+                    ① 这家公司<strong>靠什么赚钱</strong>？（经营活动）<br>
+                    ② 钱花到<strong>哪里去了</strong>？（投资活动）<br>
+                    ③ <strong>欠了多少钱</strong>？（筹资活动）<br>
+                    这个框架可以帮你快速建立对一家公司的基本认知。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 4 -->
+    <div class="section s4" id="sec4">
+        <div class="section-header" onclick="toggle('sec4')">
+            <div class="left">
+                <div class="section-number">4</div>
+                <h3>四份报表——企业的"四面佛"</h3>
+            </div>
+            <span class="time">7 分钟</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="section-body">
+            <div class="section-content">
+                <p>任何复杂的企业，通过帕乔利密码的转换，都能用以下四份报表描述：</p>
+
+                <table class="content-table">
+                    <tr><th>#</th><th>报表</th><th>核心作用</th><th>一句话理解</th></tr>
+                    <tr>
+                        <td>1</td>
+                        <td><strong>资产负债表</strong></td>
+                        <td>资产 = 负债 + 股东权益</td>
+                        <td>企业的<strong>"照片"</strong>——某一时点的财务状况</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td><strong>利润表</strong></td>
+                        <td>收入 - 费用 = 净利润</td>
+                        <td>企业的<strong>"录像"</strong>——一段时期的经营成果</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td><strong>现金流量表</strong></td>
+                        <td>经营/投资/筹资现金流</td>
+                        <td>企业的<strong>"血液"</strong>——现金的流入流出</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td><strong>股东权益变动表</strong></td>
+                        <td>解释股东权益的变化</td>
+                        <td>企业的<strong>"公平秤"</strong>——管理层是否公平对待股东</td>
+                    </tr>
+                </table>
+
+                <div class="formula-box">
+                    资产 = 负债 + 股东权益
+                    <small>这个恒等式永远成立，是理解所有财务报表的起点</small>
+                </div>
+
+                <h4>一个有趣的记忆口诀</h4>
+                <div class="story-card">
+                    <div class="story-title">改编自《风从哪里来》</div>
+                    <p style="text-align:center; font-size:16px; line-height:2;">
+                        "钱从哪里来、要到那里去？<br>
+                        有谁能告诉我，钱从哪里来？"
+                    </p>
+                    <ul class="bullet-list" style="margin-top:10px;">
+                        <li><strong>前两句</strong> = 资产负债表（陈述资金的来源和用途）</li>
+                        <li><strong>后两句</strong> = 其他三份报表（解释资金或股东权益的变动）</li>
+                    </ul>
+                </div>
+
+                <h4>四份报表的详细定位</h4>
+                <ul class="bullet-list green-list">
+                    <li><strong>资产负债表</strong>：了解企业财务结构最重要的利器</li>
+                    <li><strong>利润表</strong>：衡量企业经营绩效最重要的依据</li>
+                    <li><strong>现金流量表</strong>：评估企业能否持续存活及竞争的核心工具</li>
+                    <li><strong>股东权益变动表</strong>：说明管理层是否公平对待股东的最重要信息</li>
+                </ul>
+
+                <div class="insight-box">
+                    <strong>对你的意义</strong>：你以后在东方财富或同花顺上看到的那些数字，不是孤立的。它们分布在这四份报表里，互相呼应、互相验证。接下来的几天，我们会逐一深入学习每一份报表。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 5 -->
+    <div class="section s5" id="sec5">
+        <div class="section-header" onclick="toggle('sec5')">
+            <div class="left">
+                <div class="section-number">5</div>
+                <h3>五项修炼——领导者的核心能力</h3>
+            </div>
+            <span class="time">5 分钟</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="section-body">
+            <div class="section-content">
+                <p>麻省理工学院的<strong>"斯隆领导模型"</strong>提出领导者需要五种核心能力，财报能在每一项中发挥作用：</p>
+
+                <table class="content-table">
+                    <tr><th>能力</th><th>含义</th><th>财报如何帮助</th></tr>
+                    <tr>
+                        <td><strong>形成愿景</strong></td>
+                        <td>设定可行、有挑战性的目标</td>
+                        <td>沃尔玛用财报数据验证愿景可行性：1990年宣称2000年营收破千亿，实际2000年达到1913亿</td>
+                    </tr>
+                    <tr>
+                        <td><strong>分析现状</strong></td>
+                        <td>认清现实，不脱离现实</td>
+                        <td>利润表毛利率不断下降 → 迫使经理人认清产品已沦为与竞争者相去不远的"商品"</td>
+                    </tr>
+                    <tr>
+                        <td><strong>协调利益</strong></td>
+                        <td>平衡各方利益相关者</td>
+                        <td>财报系统汇整了员工（薪资）、客户（应收）、供应商（应付）、银行（贷款）、股东（股利）、政府（税金）的关系</td>
+                    </tr>
+                    <tr>
+                        <td><strong>尝试创新</strong></td>
+                        <td>发现新的做事方法</td>
+                        <td>戴尔用财报验证直销模式：1994-2003年间销售和管理费用比惠普少了5%到8%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>激励赋能</strong></td>
+                        <td>确保足够资源实现愿景</td>
+                        <td>微软保留490亿美元现金（超年营收1.5倍），确保"一年没收入"也能维持研发</td>
+                    </tr>
+                </table>
+
+                <div class="story-card">
+                    <div class="story-title">微软的"深谋远虑"</div>
+                    <p>比尔·盖茨要求微软的现金及短期投资，能应对<strong>一年没有收入</strong>时所有的必要开支。2003年微软现金490亿美元，是年营收321亿美元的1.5倍，约占总资产的62%。</p>
+                    <p>看起来"闲置资金"太多，但盖茨认为：留下足够的"空白"，提供企业充分的弹性与安定性，<strong>往往是领导者深谋远虑的智慧</strong>。</p>
+                </div>
+
+                <div class="highlight-box">
+                    <strong>启示</strong>：好的愿景不是空洞的口号，而是具有高度挑战性、能激发员工斗志、又确实可行的目标。财报数据能成为沟通愿景、形成共识的重要工具。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 6 -->
+    <div class="section s6" id="sec6">
+        <div class="section-header" onclick="toggle('sec6')">
+            <div class="left">
+                <div class="section-number">6</div>
+                <h3>七伤拳的启示</h3>
+            </div>
+            <span class="time">5 分钟</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="section-body">
+            <div class="section-content">
+                <p>金庸《倚天屠龙记》中描述了一门武功<strong>"七伤拳"</strong>——威力无穷，但使用时也伤害自己，<strong>"伤人一寸，伤己一尺"</strong>。谢逊练成七伤拳后，先是瞎了双眼，然后开始神智不清。</p>
+
+                <p><strong>做假账就像练七伤拳</strong>：</p>
+                <ol class="numbered-list">
+                    <li>一开始似乎只伤害了投资人</li>
+                    <li>但终究<strong>伤害最大的是自己和公司</strong></li>
+                    <li>使人<strong>盲目</strong>——没有公允信息就无法判断企业真实状况</li>
+                    <li>使人<strong>疯狂</strong>——没有优质信息就不能思考</li>
+                </ol>
+
+                <p>投资界有个共识：<strong>一旦企业开始做假账，就像染上毒瘾，程度只会越来越大</strong>，非常难以戒除。</p>
+
+                <div class="danger-box">
+                    ⭐ <strong>必须记住</strong>：财报的核心价值是<strong>忠于所托、反映事实</strong>，这也是创造企业长期竞争力的基本条件之一。<br><br>
+                    在其他行业，发挥创造力会被大力赞扬。大概只有在会计学里，说一家企业的财务报表太有"创造力"，是极大的负面评价。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="summary-card">
+        <h2>今日收获</h2>
+        <blockquote>财报的核心使命是"课责性"——经理人必须向股东交代，而财报就是交代的最重要工具。</blockquote>
+        <blockquote>财报的功能是帮你"问问题"，而不是直接给你"答案"。</blockquote>
+        <blockquote>经营活动决定企业的本质，投资活动决定企业的未来，筹资活动决定企业的风险。记住这三个维度，你分析任何公司都有章可循。</blockquote>
+    </div>
+
+    <!-- Quiz Section -->
+    <div class="quiz-section" id="quiz">
+        <h2>课后复习题</h2>
+
+        <div class="quiz-item" data-answer="2">
+            <div class="quiz-question">
+                <span class="quiz-num">Q1.</span>
+                <span>财报分析的两种基本方法分别对应什么概念？</span>
+            </div>
+            <div class="quiz-options">
+                <div class="quiz-option" data-idx="0">
+                    <div class="radio"></div>
+                    <span>利润 vs 现金流</span>
+                </div>
+                <div class="quiz-option" data-idx="1">
+                    <div class="radio"></div>
+                    <span>资产 vs 负债</span>
+                </div>
+                <div class="quiz-option" data-idx="2">
+                    <div class="radio"></div>
+                    <span>存量（特定时点的财务资源）vs 流量（特定期间内的变化）</span>
+                </div>
+                <div class="quiz-option" data-idx="3">
+                    <div class="radio"></div>
+                    <span>纵向比较 vs 横向比较</span>
+                </div>
+            </div>
+            <div class="quiz-explanation correct-exp">
+                <strong>正确！</strong> "表达事实"对应存量（Stock）——特定时点企业拥有多少财务资源；"解释变化"对应流量（Flow）——特定期间内财务状况如何变化。财报的功能就是同时呈现这两类信息。
+            </div>
+            <div class="quiz-explanation wrong-exp">
+                <strong>不正确。</strong> 正确答案是"存量 vs 流量"。存量代表特定时点的财务资源（如现金余额），流量代表特定期间内的变化（如年度营收）。财报需要同时呈现"事实"和"变化"。
+            </div>
+        </div>
+
+        <div class="quiz-item" data-answer="1">
+            <div class="quiz-question">
+                <span class="quiz-num">Q2.</span>
+                <span>企业的"经营活动"对应刘邦麾下的哪位人物？它决定什么？</span>
+            </div>
+            <div class="quiz-options">
+                <div class="quiz-option" data-idx="0">
+                    <div class="radio"></div>
+                    <span>张良——决定企业的未来</span>
+                </div>
+                <div class="quiz-option" data-idx="1">
+                    <div class="radio"></div>
+                    <span>韩信——决定企业的本质（营收和获利）</span>
+                </div>
+                <div class="quiz-option" data-idx="2">
+                    <div class="radio"></div>
+                    <span>萧何——决定企业的风险</span>
+                </div>
+                <div class="quiz-option" data-idx="3">
+                    <div class="radio"></div>
+                    <span>刘邦本人——决定企业的方向</span>
+                </div>
+            </div>
+            <div class="quiz-explanation correct-exp">
+                <strong>正确！</strong> 韩信代表"市场占有活动"→ 经营活动。经营活动决定企业的本质，重点是营收及获利的持续增长，以及从顾客端顺利收取现金。记住：经营=本质，投资=未来，筹资=风险。
+            </div>
+            <div class="quiz-explanation wrong-exp">
+                <strong>不正确。</strong> 经营活动对应韩信（市场占有），决定企业的本质。张良对应投资活动（决定未来），萧何对应筹资活动（决定风险/资金流）。
+            </div>
+        </div>
+
+        <div class="quiz-item" data-answer="0">
+            <div class="quiz-question">
+                <span class="quiz-num">Q3.</span>
+                <span>以下哪份报表被称为企业的"血液"？</span>
+            </div>
+            <div class="quiz-options">
+                <div class="quiz-option" data-idx="0">
+                    <div class="radio"></div>
+                    <span>现金流量表——记录现金的流入和流出</span>
+                </div>
+                <div class="quiz-option" data-idx="1">
+                    <div class="radio"></div>
+                    <span>利润表——记录收入和费用的变化</span>
+                </div>
+                <div class="quiz-option" data-idx="2">
+                    <div class="radio"></div>
+                    <span>资产负债表——记录资产和负债的分布</span>
+                </div>
+                <div class="quiz-option" data-idx="3">
+                    <div class="radio"></div>
+                    <span>股东权益变动表——记录所有权的变化</span>
+                </div>
+            </div>
+            <div class="quiz-explanation correct-exp">
+                <strong>正确！</strong> 现金流量表是企业的"血液"——记录现金如何因经营、投资、筹资活动而流入流出。企业可以暂时没有利润，但不能没有现金。没有血液，企业就会"猝死"。
+            </div>
+            <div class="quiz-explanation wrong-exp">
+                <strong>不正确。</strong> 现金流量表是企业的"血液"。资产负债表是"照片"，利润表是"录像"，股东权益变动表是"公平秤"。
+            </div>
+        </div>
+
+        <div class="quiz-item" data-answer="3">
+            <div class="quiz-question">
+                <span class="quiz-num">Q4.</span>
+                <span>巴菲特收购沃尔玛的事业只用了两小时就敲定，最核心的原因是什么？</span>
+            </div>
+            <div class="quiz-options">
+                <div class="quiz-option" data-idx="0">
+                    <div class="radio"></div>
+                    <span>因为收购价格非常便宜，占了很大便宜</span>
+                </div>
+                <div class="quiz-option" data-idx="1">
+                    <div class="radio"></div>
+                    <span>因为有投资银行担保交易安全</span>
+                </div>
+                <div class="quiz-option" data-idx="2">
+                    <div class="radio"></div>
+                    <span>因为他和沃尔玛CEO是私人朋友</span>
+                </div>
+                <div class="quiz-option" data-idx="3">
+                    <div class="radio"></div>
+                    <span>因为沃尔玛多年诚信经营，巴菲特完全相信其财报数字</span>
+                </div>
+            </div>
+            <div class="quiz-explanation correct-exp">
+                <strong>正确！</strong> 巴菲特多年将《财富》杂志"最受尊敬的企业"第一名投给沃尔玛，对沃尔玛的诚信和经营能力高度信任。所以他能根据财报数字迅速计算合理价格，29天内15亿美元直接汇入。诚信大幅降低了交易成本。
+            </div>
+            <div class="quiz-explanation wrong-exp">
+                <strong>不正确。</strong> 最核心的原因是沃尔玛多年诚信经营，巴菲特完全相信其财报上的数字。这体现了"好的道德等于好的生意"——诚信能大幅降低交易成本和投资风险。
+            </div>
+        </div>
+
+        <div class="quiz-item" data-answer="2">
+            <div class="quiz-question">
+                <span class="quiz-num">Q5.</span>
+                <span>为什么做假账被比喻为"七伤拳"？以下哪个描述最准确？</span>
+            </div>
+            <div class="quiz-options">
+                <div class="quiz-option" data-idx="0">
+                    <div class="radio"></div>
+                    <span>因为做假账需要七种不同的技巧才能完成</span>
+                </div>
+                <div class="quiz-option" data-idx="1">
+                    <div class="radio"></div>
+                    <span>因为做假账最多只能骗七年就会被发现</span>
+                </div>
+                <div class="quiz-option" data-idx="2">
+                    <div class="radio"></div>
+                    <span>因为看似伤害了投资人，但最终伤害最大的是自己和公司——使人盲目和疯狂</span>
+                </div>
+                <div class="quiz-option" data-idx="3">
+                    <div class="radio"></div>
+                    <span>因为七伤拳是金庸小说中最厉害的武功</span>
+                </div>
+            </div>
+            <div class="quiz-explanation correct-exp">
+                <strong>正确！</strong> "七伤拳"的比喻是"伤人一寸，伤己一尺"。做假账一开始似乎只伤害投资人，但最终使自己盲目（无法判断真实状况）、疯狂（无法思考），且像毒瘾一样越陷越深，难以戒除。财报的核心价值是忠于所托、反映事实。
+            </div>
+            <div class="quiz-explanation wrong-exp">
+                <strong>不正确。</strong> 七伤拳的核心含义是"伤人一寸，伤己一尺"——做假账看似伤害投资人，但最终使自己盲目（无法判断企业真实状况）、疯狂（没有优质信息就不能思考），像染上毒瘾一样越来越严重。
+            </div>
+        </div>
+
+        <div class="quiz-item" data-answer="1">
+            <div class="quiz-question">
+                <span class="quiz-num">Q6.</span>
+                <span>以下关于"三类活动"的说法，哪一项是错误的？</span>
+            </div>
+            <div class="quiz-options">
+                <div class="quiz-option" data-idx="0">
+                    <div class="radio"></div>
+                    <span>投资活动包括"把钱花在哪"和"把错误投资收回来"两个方向</span>
+                </div>
+                <div class="quiz-option" data-idx="1">
+                    <div class="radio"></div>
+                    <span>经营活动是最不重要的，因为它的金额通常最小</span>
+                </div>
+                <div class="quiz-option" data-idx="2">
+                    <div class="radio"></div>
+                    <span>筹资活动相当于企业的"粮道"——资金流</span>
+                </div>
+                <div class="quiz-option" data-idx="3">
+                    <div class="radio"></div>
+                    <span>成功的经营活动可能让股东更愿意提供融资</span>
+                </div>
+            </div>
+            <div class="quiz-explanation correct-exp">
+                <strong>正确！</strong> 经营活动绝不是最不重要的——恰恰相反，<strong>经营活动决定企业的本质</strong>，是企业最核心的活动。它是营收和利润的来源，也是投资和筹资的基础。三类活动没有"重要与否"之分，它们各有分工。
+            </div>
+            <div class="quiz-explanation wrong-exp">
+                <strong>不正确。</strong> B是错误的说法。经营活动决定企业的本质，是企业最核心的活动，绝不是"最不重要的"。A、C、D都是正确的描述。
+            </div>
+        </div>
+
+        <div class="quiz-item" data-answer="0">
+            <div class="quiz-question">
+                <span class="quiz-num">Q7.</span>
+                <span>微软保留490亿美元现金（超过年营收的1.5倍），盖茨的理由是什么？这对你选股有什么启示？</span>
+            </div>
+            <div class="quiz-options">
+                <div class="quiz-option" data-idx="0">
+                    <div class="radio"></div>
+                    <span>为了应对"一年没收入"的风险；选股时应关注公司的现金储备是否充裕</span>
+                </div>
+                <div class="quiz-option" data-idx="1">
+                    <div class="radio"></div>
+                    <span>为了准备收购其他公司；选股时应只选现金最多的公司</span>
+                </div>
+                <div class="quiz-option" data-idx="2">
+                    <div class="radio"></div>
+                    <span>因为微软不知道该怎么花钱；说明现金多不一定是好事</span>
+                </div>
+                <div class="quiz-option" data-idx="3">
+                    <div class="radio"></div>
+                    <span>为了支付高额员工奖金；选股时应关注员工薪酬水平</span>
+                </div>
+            </div>
+            <div class="quiz-explanation correct-exp">
+                <strong>正确！</strong> 盖茨要求现金足以应对"一年没有收入"的所有必要开支（研发、人事等业务开销）。这体现了"激励赋能"中的财务安定性。对你选股的启示：现金储备充裕的公司抗风险能力更强，在行业寒冬中存活概率更高。但不能"只看现金多"，要结合公司的商业模式综合判断。
+            </div>
+            <div class="quiz-explanation wrong-exp">
+                <strong>不正确。</strong> 盖茨的理由是应对极端风险——即使一年没有收入，也能维持所有必要的研发、人事和业务开销。这体现了"激励赋能"中的财务安定性思维。选股启示：现金储备充裕的公司抗风险能力更强。
+            </div>
+        </div>
+
+        <button class="quiz-submit" onclick="submitQuiz()">提交答案</button>
+        <div class="quiz-result" id="quizResult"></div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <div class="bottom-nav">
+        <a href="Day_01.html">
+            <span class="nav-arrow">←</span>
+            <div class="nav-text">
+                <small>上一篇</small>
+                Day 1：帕乔利密码
+            </div>
+        </a>
+        <a class="home" href="index.html">
+            <span class="nav-arrow">📖</span>
+            <div class="nav-text">
+                <small>返回</small>
+                日推目录
+            </div>
+        </a>
+    </div>
+
+</div>
+
+<script>
+    function toggle(id) {
+        const section = document.getElementById(id);
+        section.classList.toggle('open');
+    }
+
+    function toggleAll(open) {
+        document.querySelectorAll('.section').forEach(s => {
+            if (open) s.classList.add('open');
+            else s.classList.remove('open');
+        });
+    }
+
+    // Quiz logic
+    const userAnswers = {};
+
+    document.querySelectorAll('.quiz-item').forEach((item, idx) => {
+        item.setAttribute('data-answer-index', idx);
+    });
+
+    document.querySelectorAll('.quiz-option').forEach(opt => {
+        opt.addEventListener('click', function() {
+            const item = this.closest('.quiz-item');
+            if (item.classList.contains('submitted')) return;
+
+            const options = item.querySelectorAll('.quiz-option');
+            options.forEach(o => o.classList.remove('selected'));
+            this.classList.add('selected');
+
+            const items = Array.from(document.querySelectorAll('.quiz-item'));
+            const itemIndex = items.indexOf(item);
+            userAnswers[itemIndex] = parseInt(this.dataset.idx);
+        });
+    });
+
+    function submitQuiz() {
+        const items = document.querySelectorAll('.quiz-item');
+        let correct = 0;
+        let total = items.length;
+
+        for (let i = 0; i < total; i++) {
+            if (userAnswers[i] === undefined) {
+                const btn = document.querySelector('.quiz-submit');
+                btn.textContent = '请先回答所有题目';
+                setTimeout(() => { btn.textContent = '提交答案'; }, 1500);
+                return;
+            }
+        }
+
+        items.forEach((item, idx) => {
+            const answer = parseInt(item.dataset.answer);
+            const userAnswer = userAnswers[idx];
+            const options = item.querySelectorAll('.quiz-option');
+            const correctExp = item.querySelector('.correct-exp');
+            const wrongExp = item.querySelector('.wrong-exp');
+
+            item.classList.add('submitted');
+
+            options.forEach(opt => {
+                const optIdx = parseInt(opt.dataset.idx);
+                opt.style.cursor = 'default';
+                if (optIdx === answer) opt.classList.add('correct');
+                if (optIdx === userAnswer && userAnswer !== answer) opt.classList.add('wrong');
+            });
+
+            if (userAnswer === answer) {
+                correct++;
+                correctExp.classList.add('show');
+            } else {
+                wrongExp.classList.add('show');
+            }
+        });
+
+        const result = document.getElementById('quizResult');
+        const pct = Math.round(correct / total * 100);
+        result.classList.add('show');
+
+        if (pct >= 85) {
+            result.className = 'quiz-result show great';
+            result.innerHTML = `${correct}/${total} 正确（${pct}%）<br><span style="font-size:14px;font-weight:400;margin-top:4px;display:block;">掌握得很好！财报分析的框架已经建立起来了，明天进入资产负债表！</span>`;
+        } else if (pct >= 57) {
+            result.className = 'quiz-result show good';
+            result.innerHTML = `${correct}/${total} 正确（${pct}%）<br><span style="font-size:14px;font-weight:400;margin-top:4px;display:block;">大部分掌握了，建议重新阅读答错的部分。"三类活动"和"四份报表"是重点。</span>`;
+        } else {
+            result.className = 'quiz-result show retry';
+            result.innerHTML = `${correct}/${total} 正确（${pct}%）<br><span style="font-size:14px;font-weight:400;margin-top:4px;display:block;">需要再巩固一下，建议全部展开重新阅读。"经营=本质、投资=未来、筹资=风险"这个框架必须记住。</span>`;
+        }
+
+        document.querySelector('.quiz-submit').disabled = true;
+        document.querySelector('.quiz-submit').textContent = '已提交';
+    }
+</script>
+
+</body>
+</html>
