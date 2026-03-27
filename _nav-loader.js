@@ -86,13 +86,23 @@
     function extractPhaseNumber(filename) {
         if (!filename) return 1;
         
-        // 匹配阶段文件名格式 phase2_day1.html
+        // 匹配阶段文件名格式 phase2_day1.html（向后兼容）
         const phaseMatch = filename.match(/phase(\d+)_day(\d+)\.html/);
         if (phaseMatch) return parseInt(phaseMatch[1]);
         
-        // 如果是Day_格式，默认为阶段1
+        // 根据总天数计算阶段号（Day_XX.html格式）
+        // 阶段1：day 1-7，阶段2：day 8-14，阶段3：day 15-21，阶段4：day 22-28
         const dayMatch = filename.match(/Day_(\d+)\.html/);
-        return dayMatch ? 1 : null;
+        if (dayMatch) {
+            const dayNum = parseInt(dayMatch[1]);
+            if (dayNum >= 1 && dayNum <= 7) return 1;
+            if (dayNum >= 8 && dayNum <= 14) return 2;
+            if (dayNum >= 15 && dayNum <= 21) return 3;
+            if (dayNum >= 22 && dayNum <= 28) return 4;
+            return Math.ceil(dayNum / 7); // 默认计算方式
+        }
+        
+        return 1;
     }
     
     // 加载阶段数据
@@ -271,10 +281,14 @@
         navHTML += `<a class="current">Day ${currentDayNum || '?'}</a>`;
         
         if (currentDayNum > 1) {
-            navHTML += `<a class="prev" href="Day_${currentDayNum - 1}.html">← Day ${currentDayNum - 1}</a>`;
+            const prevDayNum = currentDayNum - 1;
+            const prevDayFormatted = prevDayNum.toString().padStart(2, '0');
+            navHTML += `<a class="prev" href="Day_${prevDayFormatted}.html">← Day ${prevDayNum}</a>`;
         }
         
-        navHTML += `<a class="next" href="Day_${currentDayNum + 1}.html">Day ${currentDayNum + 1} →</a>`;
+        const nextDayNum = currentDayNum + 1;
+        const nextDayFormatted = nextDayNum.toString().padStart(2, '0');
+        navHTML += `<a class="next" href="Day_${nextDayFormatted}.html">Day ${nextDayNum} →</a>`;
         
         insertNavBar(navHTML);
     }

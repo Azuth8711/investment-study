@@ -44,7 +44,7 @@
             "totalDays": 7,
             "completedDays": 0,
             "prevPhaseFile": "Day_03.html",
-            "nextPhaseFile": "phase3_day1.html"
+            "nextPhaseFile": "Day_15.html"
         },
         {
             "phaseNum": 3,
@@ -54,8 +54,8 @@
             "days": [],
             "totalDays": 7,
             "completedDays": 0,
-            "prevPhaseFile": "phase2_day7.html",
-            "nextPhaseFile": "phase4_day1.html"
+            "prevPhaseFile": "Day_14.html",
+            "nextPhaseFile": "Day_22.html"
         },
         {
             "phaseNum": 4,
