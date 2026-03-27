@@ -278,19 +278,26 @@
     // 生成后备导航栏
     function generateFallbackNavBar() {
         let navHTML = `<a class="home" href="index.html">📖 目录</a>`;
-        navHTML += `<a class="current">Day ${currentDayNum || '?'}</a>`;
         
+        // 上一篇按钮（如果存在）
         if (currentDayNum > 1) {
             const prevDayNum = currentDayNum - 1;
             const prevDayFormatted = prevDayNum.toString().padStart(2, '0');
             navHTML += `<a class="prev" href="Day_${prevDayFormatted}.html">← Day ${prevDayNum}</a>`;
         }
         
+        // 当前页标识
+        navHTML += `<a class="current">Day ${currentDayNum || '?'}</a>`;
+        
+        // 下一篇按钮
         const nextDayNum = currentDayNum + 1;
         const nextDayFormatted = nextDayNum.toString().padStart(2, '0');
         navHTML += `<a class="next" href="Day_${nextDayFormatted}.html">Day ${nextDayNum} →</a>`;
         
         insertNavBar(navHTML);
+        
+        // 同时更新底部导航
+        updateFallbackFooterNavigation();
     }
     
     // 插入导航栏到页面
@@ -343,9 +350,38 @@
         updateFooterButton('.next', nextDay, false, '下一篇');
     }
     
+    // 更新后备底部导航
+    function updateFallbackFooterNavigation() {
+        // 创建后备导航的day对象
+        const prevDay = currentDayNum > 1 ? {
+            file: `Day_${(currentDayNum - 1).toString().padStart(2, '0')}.html`,
+            num: currentDayNum - 1
+        } : null;
+        
+        const nextDay = {
+            file: `Day_${(currentDayNum + 1).toString().padStart(2, '0')}.html`,
+            num: currentDayNum + 1
+        };
+        
+        updateFooterButton('.prev', prevDay, false, '上一篇');
+        updateFooterButton('.next', nextDay, false, '下一篇');
+    }
+    
     // 更新底部按钮通用函数
     function updateFooterButton(selector, day, showPhaseLink, phaseText) {
-        const btn = document.querySelector(`.footer-nav-btn${selector}`);
+        // 根据当前页面结构确定按钮选择器
+        let btnSelector;
+        if (selector === '.prev') {
+            // 上一篇按钮：页脚中的第一个.footer-nav-btn
+            btnSelector = 'footer .footer-nav-btn:first-child';
+        } else if (selector === '.next') {
+            // 下一篇按钮：页脚中的最后一个.footer-nav-btn
+            btnSelector = 'footer .footer-nav-btn:last-child';
+        } else {
+            return; // 未知选择器
+        }
+        
+        const btn = document.querySelector(btnSelector);
         if (!btn) return;
         
         if (day) {
