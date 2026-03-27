@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day 1 - 帕乔利的财富密码</title>
+    <title>Day 01 - 自序与解读帕乔利的财富密码 | 财报学习日推</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -12,13 +12,10 @@
             background: #f5f6f8;
             color: #2c3e50;
             line-height: 1.8;
-            padding: 20px;
+            min-height: 100vh;
         }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
 
         /* Header */
         .header {
@@ -29,554 +26,21 @@
             margin-bottom: 24px;
             box-shadow: 0 4px 20px rgba(26, 82, 118, 0.25);
         }
-        .header .tag {
-            display: inline-block;
+        .header .progress-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             background: rgba(255,255,255,0.2);
-            padding: 3px 12px;
+            padding: 6px 16px;
             border-radius: 20px;
             font-size: 13px;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
-        .header h1 {
-            font-size: 26px;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-        .header .subtitle {
-            font-size: 15px;
-            opacity: 0.85;
-        }
-        .header .meta {
-            display: flex;
-            gap: 20px;
-            margin-top: 16px;
-            font-size: 13px;
-            opacity: 0.7;
-        }
+        .header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        .header .subtitle { font-size: 15px; opacity: 0.9; }
+        .header .meta { display: flex; gap: 20px; margin-top: 16px; font-size: 13px; opacity: 0.8; }
 
-        /* Goal Card */
-        .goal-card {
-            background: #fff;
-            border-left: 4px solid #2e86c1;
-            padding: 20px 24px;
-            border-radius: 0 12px 12px 0;
-            margin-bottom: 24px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-        }
-        .goal-card h2 {
-            font-size: 16px;
-            color: #1a5276;
-            margin-bottom: 10px;
-        }
-        .goal-card ul {
-            list-style: none;
-            padding: 0;
-        }
-        .goal-card ul li {
-            padding: 4px 0;
-            padding-left: 20px;
-            position: relative;
-            font-size: 14px;
-        }
-        .goal-card ul li::before {
-            content: "?";
-            position: absolute;
-            left: 0;
-            color: #2e86c1;
-            font-weight: 700;
-        }
-
-        /* Collapsible Sections */
-        .section {
-            background: #fff;
-            border-radius: 12px;
-            margin-bottom: 14px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-            overflow: hidden;
-            transition: box-shadow 0.3s;
-        }
-        .section:hover {
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
-        .section-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 18px 24px;
-            cursor: pointer;
-            user-select: none;
-            transition: background 0.2s;
-        }
-        .section-header:hover {
-            background: #f8f9fb;
-        }
-        .section-header .left {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-        .section-number {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 15px;
-            color: #fff;
-            flex-shrink: 0;
-        }
-        .s1 .section-number { background: #2e86c1; }
-        .s2 .section-number { background: #c0392b; }
-        .s3 .section-number { background: #27ae60; }
-        .s4 .section-number { background: #8e44ad; }
-        .s5 .section-number { background: #e67e22; }
-
-        .section-header h3 {
-            font-size: 16px;
-            font-weight: 600;
-            color: #2c3e50;
-        }
-        .section-header .time {
-            font-size: 12px;
-            color: #95a5a6;
-            background: #f0f0f0;
-            padding: 2px 10px;
-            border-radius: 10px;
-            flex-shrink: 0;
-        }
-        .section-header .arrow {
-            font-size: 14px;
-            color: #bdc3c7;
-            transition: transform 0.3s;
-            flex-shrink: 0;
-            margin-left: 12px;
-        }
-        .section.open .arrow {
-            transform: rotate(180deg);
-        }
-
-        .section-body {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .section.open .section-body {
-            max-height: 3000px;
-        }
-        .section-content {
-            padding: 0 24px 24px 24px;
-        }
-
-        /* Content Styles */
-        .section-content p {
-            margin-bottom: 12px;
-            font-size: 15px;
-            color: #34495e;
-        }
-        .section-content strong {
-            color: #1a5276;
-        }
-        .section-content h4 {
-            font-size: 15px;
-            color: #2c3e50;
-            margin: 18px 0 8px 0;
-            padding-bottom: 6px;
-            border-bottom: 1px solid #eee;
-        }
-        .section-content h4:first-child {
-            margin-top: 0;
-        }
-
-        .highlight-box {
-            background: #fef9e7;
-            border-left: 4px solid #f39c12;
-            padding: 14px 18px;
-            border-radius: 0 8px 8px 0;
-            margin: 14px 0;
-            font-size: 14px;
-            color: #7d6608;
-        }
-        .danger-box {
-            background: #fdedec;
-            border-left: 4px solid #e74c3c;
-            padding: 14px 18px;
-            border-radius: 0 8px 8px 0;
-            margin: 14px 0;
-            font-size: 14px;
-            color: #922b21;
-        }
-        .insight-box {
-            background: #eaf2f8;
-            border-left: 4px solid #2e86c1;
-            padding: 14px 18px;
-            border-radius: 0 8px 8px 0;
-            margin: 14px 0;
-            font-size: 14px;
-            color: #1a5276;
-        }
-
-        .story-card {
-            background: #f8f9fb;
-            border-radius: 10px;
-            padding: 16px 18px;
-            margin: 14px 0;
-        }
-        .story-card .story-title {
-            font-weight: 700;
-            color: #8e44ad;
-            margin-bottom: 6px;
-            font-size: 14px;
-        }
-        .story-card p {
-            font-size: 14px;
-            margin-bottom: 6px;
-        }
-
-        /* Tables */
-        .content-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 14px 0;
-            font-size: 14px;
-        }
-        .content-table th {
-            background: #2c3e50;
-            color: #fff;
-            padding: 10px 14px;
-            text-align: left;
-            font-weight: 600;
-        }
-        .content-table th:first-child {
-            border-radius: 8px 0 0 0;
-        }
-        .content-table th:last-child {
-            border-radius: 0 8px 0 0;
-        }
-        .content-table td {
-            padding: 10px 14px;
-            border-bottom: 1px solid #ecf0f1;
-            color: #34495e;
-        }
-        .content-table tr:last-child td {
-            border-bottom: none;
-        }
-        .content-table tr:nth-child(even) {
-            background: #f8f9fb;
-        }
-
-        /* Comparison Table (Dog type) */
-        .compare-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 14px 0;
-            font-size: 14px;
-        }
-        .compare-table th {
-            padding: 10px 12px;
-            font-weight: 600;
-        }
-        .compare-table th:nth-child(2) {
-            background: #eaf2f8;
-            color: #2e86c1;
-            text-align: center;
-        }
-        .compare-table th:nth-child(3) {
-            background: #eafaf1;
-            color: #27ae60;
-            text-align: center;
-        }
-        .compare-table th:first-child {
-            background: #f8f9fb;
-            color: #7f8c8d;
-            text-align: center;
-            border-radius: 8px 0 0 0;
-        }
-        .compare-table td {
-            padding: 10px 12px;
-            border-bottom: 1px solid #ecf0f1;
-        }
-        .compare-table td:first-child {
-            font-weight: 600;
-            color: #7f8c8d;
-            text-align: center;
-            background: #f8f9fb;
-        }
-        .compare-table tr:last-child td:first-child {
-            border-radius: 0 0 0 8px;
-        }
-
-        /* Bullet Lists */
-        .bullet-list {
-            list-style: none;
-            padding: 0;
-        }
-        .bullet-list li {
-            padding: 5px 0 5px 22px;
-            position: relative;
-            font-size: 14px;
-        }
-        .bullet-list li::before {
-            content: "";
-            position: absolute;
-            left: 6px;
-            top: 14px;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #2e86c1;
-        }
-        .danger-list li::before {
-            background: #e74c3c;
-        }
-        .green-list li::before {
-            background: #27ae60;
-        }
-        .purple-list li::before {
-            background: #8e44ad;
-        }
-
-        .numbered-list {
-            list-style: none;
-            padding: 0;
-            counter-reset: item;
-        }
-        .numbered-list li {
-            padding: 5px 0 5px 30px;
-            position: relative;
-            font-size: 14px;
-            counter-increment: item;
-        }
-        .numbered-list li::before {
-            content: counter(item);
-            position: absolute;
-            left: 4px;
-            top: 5px;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #e74c3c;
-            color: #fff;
-            font-size: 12px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Quiz Section */
-        .quiz-section {
-            background: #fff;
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 24px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-        }
-        .quiz-section h2 {
-            font-size: 18px;
-            color: #1a5276;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #eaf2f8;
-        }
-
-        .quiz-item {
-            margin-bottom: 20px;
-            padding: 16px;
-            background: #f8f9fb;
-            border-radius: 10px;
-        }
-        .quiz-question {
-            font-weight: 600;
-            font-size: 15px;
-            color: #2c3e50;
-            margin-bottom: 12px;
-            display: flex;
-            gap: 8px;
-        }
-        .quiz-num {
-            color: #e67e22;
-            flex-shrink: 0;
-        }
-
-        .quiz-options {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .quiz-option {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            padding: 10px 14px;
-            background: #fff;
-            border: 2px solid #ecf0f1;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-        .quiz-option:hover {
-            border-color: #bdc3c7;
-            background: #f8f9fb;
-        }
-        .quiz-option.selected {
-            border-color: #2e86c1;
-            background: #eaf2f8;
-        }
-        .quiz-option.correct {
-            border-color: #27ae60;
-            background: #eafaf1;
-        }
-        .quiz-option.wrong {
-            border-color: #e74c3c;
-            background: #fdedec;
-        }
-        .quiz-option .radio {
-            width: 18px;
-            height: 18px;
-            border: 2px solid #bdc3c7;
-            border-radius: 50%;
-            flex-shrink: 0;
-            margin-top: 2px;
-            position: relative;
-            transition: all 0.2s;
-        }
-        .quiz-option.selected .radio {
-            border-color: #2e86c1;
-        }
-        .quiz-option.selected .radio::after {
-            content: "";
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #2e86c1;
-        }
-        .quiz-option.correct .radio {
-            border-color: #27ae60;
-        }
-        .quiz-option.correct .radio::after {
-            content: "";
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #27ae60;
-        }
-        .quiz-option.wrong .radio {
-            border-color: #e74c3c;
-        }
-        .quiz-option.wrong .radio::after {
-            content: "";
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #e74c3c;
-        }
-
-        .quiz-explanation {
-            display: none;
-            margin-top: 10px;
-            padding: 10px 14px;
-            border-radius: 8px;
-            font-size: 13px;
-            line-height: 1.6;
-        }
-        .quiz-explanation.show {
-            display: block;
-        }
-        .quiz-explanation.correct-exp {
-            background: #eafaf1;
-            color: #1e8449;
-            border-left: 3px solid #27ae60;
-        }
-        .quiz-explanation.wrong-exp {
-            background: #fdedec;
-            color: #922b21;
-            border-left: 3px solid #e74c3c;
-        }
-
-        .quiz-submit {
-            display: block;
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #1a5276, #2e86c1);
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: opacity 0.2s;
-            margin-top: 8px;
-        }
-        .quiz-submit:hover {
-            opacity: 0.9;
-        }
-        .quiz-submit:disabled {
-            background: #bdc3c7;
-            cursor: not-allowed;
-        }
-
-        .quiz-result {
-            display: none;
-            text-align: center;
-            padding: 20px;
-            margin-top: 16px;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: 700;
-        }
-        .quiz-result.show {
-            display: block;
-        }
-        .quiz-result.great {
-            background: #eafaf1;
-            color: #1e8449;
-        }
-        .quiz-result.good {
-            background: #eaf2f8;
-            color: #1a5276;
-        }
-        .quiz-result.retry {
-            background: #fdedec;
-            color: #922b21;
-        }
-
-        /* Summary */
-        .summary-card {
-            background: linear-gradient(135deg, #f8f9fb 0%, #eaf2f8 100%);
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 24px;
-            border: 1px solid #d4e6f1;
-        }
-        .summary-card h2 {
-            font-size: 16px;
-            color: #1a5276;
-            margin-bottom: 14px;
-        }
-        .summary-card blockquote {
-            margin: 0;
-            padding: 10px 0;
-            font-size: 14px;
-            color: #2c3e50;
-            border-left: 3px solid #2e86c1;
-            padding-left: 16px;
-            margin-bottom: 8px;
-        }
-
-        /* Nav */
+        /* Nav Bar */
         .nav-bar {
             display: flex; gap: 10px; margin-bottom: 20px; align-items: center;
         }
@@ -586,51 +50,267 @@
         }
         .nav-bar a.home { background: #fff; color: #1a5276; border: 1px solid #d4e6f1; }
         .nav-bar a.home:hover { background: #eaf2f8; }
-        .nav-bar a.prev { background: #fff; color: #2e86c1; border: 1px solid #d4e6f1; }
-        .nav-bar a.prev:hover { background: #eaf2f8; }
         .nav-bar a.next { background: #2e86c1; color: #fff; border: 1px solid #2e86c1; }
         .nav-bar a.next:hover { opacity: 0.9; }
         .nav-bar a.current { background: #ecf0f1; color: #7f8c8d; cursor: default; }
 
-        /* Bottom Nav */
-        .bottom-nav {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-top: 24px; margin-bottom: 40px; padding-top: 20px;
-            border-top: 1px solid #ecf0f1;
+        /* Section */
+        .section {
+            background: #fff; border-radius: 12px; margin-bottom: 14px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06); overflow: hidden; transition: box-shadow 0.3s;
         }
-        .bottom-nav a {
-            display: flex; align-items: center; gap: 8px;
-            padding: 12px 20px; border-radius: 10px; text-decoration: none;
-            font-size: 14px; font-weight: 600; transition: all 0.2s;
-            background: #fff; border: 1px solid #d4e6f1;
+        .section:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .section-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 24px; cursor: pointer; user-select: none; transition: background 0.2s;
         }
-        .bottom-nav a:hover { background: #eaf2f8; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
-        .bottom-nav a.next-link { background: #2e86c1; color: #fff; border-color: #2e86c1; }
-        .bottom-nav a.next-link:hover { opacity: 0.9; }
-        .bottom-nav a .nav-arrow { font-size: 18px; }
-        .bottom-nav .nav-text { display: flex; flex-direction: column; }
-        .bottom-nav .nav-text small { font-size: 11px; font-weight: 400; opacity: 0.7; }
+        .section-header:hover { background: #f8f9fb; }
+        .section-header .left { display: flex; align-items: center; gap: 14px; }
+        .section-number {
+            width: 32px; height: 32px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 15px; color: #fff; flex-shrink: 0;
+        }
+        .s1 .section-number { background: #c0392b; }
+        .s2 .section-number { background: #2e86c1; }
+        .s3 .section-number { background: #27ae60; }
+        .s4 .section-number { background: #8e44ad; }
+        .s5 .section-number { background: #e67e22; }
+        .s6 .section-number { background: #16a085; }
 
-        /* Expand All */
-        .toolbar {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 14px;
-            gap: 10px;
+        .section-header h3 { font-size: 16px; font-weight: 600; color: #2c3e50; }
+        .section-header .arrow {
+            font-size: 14px; color: #bdc3c7; transition: transform 0.3s;
+            flex-shrink: 0; margin-left: 12px;
         }
+        .section.open .arrow { transform: rotate(180deg); }
+        .section-body { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .section.open .section-body { max-height: 5000px; }
+        .section-content { padding: 0 24px 24px 24px; }
+
+        /* Content Styles */
+        .section-content p { margin-bottom: 12px; font-size: 15px; color: #34495e; }
+        .section-content strong { color: #1a5276; }
+        .section-content h4 {
+            font-size: 15px; color: #2c3e50; margin: 18px 0 8px 0;
+            padding-bottom: 6px; border-bottom: 1px solid #eee;
+        }
+        .section-content h4:first-child { margin-top: 0; }
+
+        .highlight-box {
+            background: #fef9e7; border-left: 4px solid #f39c12;
+            padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0;
+            font-size: 14px; color: #7d6608;
+        }
+        .insight-box {
+            background: #eaf2f8; border-left: 4px solid #2e86c1;
+            padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0;
+            font-size: 14px; color: #1a5276;
+        }
+        .quote-box {
+            background: #f8f9fb; border-left: 4px solid #8e44ad;
+            padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0;
+            font-style: italic; color: #555;
+        }
+        .warning-box {
+            background: #fdf2f2; border-left: 4px solid #e74c3c;
+            padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0;
+            font-size: 14px; color: #c0392b;
+        }
+        .story-card {
+            background: #f8f9fb; border-radius: 10px; padding: 16px 18px; margin: 14px 0;
+        }
+        .story-card .story-title {
+            font-weight: 700; color: #8e44ad; margin-bottom: 6px; font-size: 14px;
+        }
+        .story-card p { font-size: 14px; margin-bottom: 6px; }
+
+        /* Tables */
+        .content-table {
+            width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px;
+        }
+        .content-table th {
+            background: #2c3e50; color: #fff; padding: 10px 14px;
+            text-align: left; font-weight: 600;
+        }
+        .content-table th:first-child { border-radius: 8px 0 0 0; }
+        .content-table th:last-child { border-radius: 0 8px 0 0; }
+        .content-table td { padding: 10px 14px; border-bottom: 1px solid #ecf0f1; color: #34495e; }
+        .content-table tr:last-child td { border-bottom: none; }
+        .content-table tr:nth-child(even) { background: #f8f9fb; }
+
+        /* Lists */
+        .bullet-list { list-style: none; padding: 0; }
+        .bullet-list li {
+            padding: 5px 0 5px 22px; position: relative; font-size: 14px;
+        }
+        .bullet-list li::before {
+            content: ""; position: absolute; left: 6px; top: 14px;
+            width: 6px; height: 6px; border-radius: 50%; background: #2e86c1;
+        }
+        .number-list { padding-left: 24px; }
+        .number-list li { margin-bottom: 8px; font-size: 14px; }
+
+        /* Quiz Section */
+        .quiz-section {
+            background: #fff; border-radius: 12px; padding: 24px;
+            margin-bottom: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        .quiz-section h2 {
+            font-size: 18px; color: #1a5276; margin-bottom: 20px;
+            padding-bottom: 10px; border-bottom: 2px solid #eaf2f8;
+        }
+        .quiz-item { margin-bottom: 20px; padding: 16px; background: #f8f9fb; border-radius: 10px; }
+        .quiz-question {
+            font-weight: 600; font-size: 15px; color: #2c3e50;
+            margin-bottom: 12px; display: flex; gap: 8px;
+        }
+        .quiz-num { color: #e67e22; flex-shrink: 0; }
+        .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+        .quiz-option {
+            display: flex; align-items: flex-start; gap: 10px;
+            padding: 10px 14px; background: #fff; border: 2px solid #ecf0f1;
+            border-radius: 8px; cursor: pointer; transition: all 0.2s;
+            font-size: 14px; line-height: 1.5;
+        }
+        .quiz-option:hover { border-color: #bdc3c7; background: #f8f9fb; }
+        .quiz-option.selected { border-color: #2e86c1; background: #eaf2f8; }
+        .quiz-option.correct { border-color: #27ae60; background: #eafaf1; }
+        .quiz-option.wrong { border-color: #e74c3c; background: #fdedec; }
+        .quiz-option .radio {
+            width: 18px; height: 18px; border: 2px solid #bdc3c7; border-radius: 50%;
+            flex-shrink: 0; margin-top: 2px; position: relative; transition: all 0.2s;
+        }
+        .quiz-option.selected .radio { border-color: #2e86c1; }
+        .quiz-option.selected .radio::after {
+            content: ""; position: absolute; top: 3px; left: 3px;
+            width: 8px; height: 8px; border-radius: 50%; background: #2e86c1;
+        }
+        .quiz-option.correct .radio { border-color: #27ae60; }
+        .quiz-option.correct .radio::after {
+            content: ""; position: absolute; top: 3px; left: 3px;
+            width: 8px; height: 8px; border-radius: 50%; background: #27ae60;
+        }
+        .quiz-option.wrong .radio { border-color: #e74c3c; }
+        .quiz-option.wrong .radio::after {
+            content: ""; position: absolute; top: 3px; left: 3px;
+            width: 8px; height: 8px; border-radius: 50%; background: #e74c3c;
+        }
+        .quiz-explanation {
+            display: none; margin-top: 10px; padding: 10px 14px;
+            border-radius: 8px; font-size: 13px; line-height: 1.6;
+        }
+        .quiz-explanation.show { display: block; }
+        .quiz-explanation.correct-exp {
+            background: #eafaf1; color: #1e8449; border-left: 3px solid #27ae60;
+        }
+        .quiz-explanation.wrong-exp {
+            background: #fdedec; color: #922b21; border-left: 3px solid #e74c3c;
+        }
+        .quiz-submit {
+            display: block; width: 100%; padding: 14px;
+            background: linear-gradient(135deg, #1a5276, #2e86c1);
+            color: #fff; border: none; border-radius: 10px;
+            font-size: 16px; font-weight: 600; cursor: pointer;
+            transition: opacity 0.2s; margin-top: 8px;
+        }
+        .quiz-submit:hover { opacity: 0.9; }
+        .quiz-submit:disabled { background: #bdc3c7; cursor: not-allowed; }
+        .quiz-result {
+            display: none; text-align: center; padding: 20px; margin-top: 16px;
+            border-radius: 10px; font-size: 18px; font-weight: 700;
+        }
+        .quiz-result.show { display: block; }
+        .quiz-result.great { background: #eafaf1; color: #1e8449; }
+        .quiz-result.good { background: #eaf2f8; color: #1a5276; }
+        .quiz-result.retry { background: #fdedec; color: #922b21; }
+
+        /* Bottom Navigation Drawer */
+        .bottom-nav-drawer {
+            background: #fff; border-radius: 12px; padding: 20px 25px;
+            margin-bottom: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        .drawer-title {
+            font-size: 13px; color: #7f8c8d;
+            text-transform: uppercase; letter-spacing: 1px;
+            margin-bottom: 15px; text-align: center;
+        }
+        .drawer-buttons {
+            display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;
+        }
+        .drawer-btn {
+            padding: 10px 20px; border: 1px dashed #95a5a6; border-radius: 6px;
+            background: transparent; color: #7f8c8d; font-size: 14px;
+            cursor: pointer; transition: all 0.2s ease;
+            text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+        }
+        .drawer-btn:hover {
+            border-color: #2e86c1; color: #2e86c1; background: rgba(46, 134, 193, 0.05);
+        }
+
+        /* Page Footer */
+        .page-footer {
+            display: flex; justify-content: center; align-items: center;
+            gap: 20px; padding: 30px 0; border-top: 1px solid #ecf0f1; margin-top: 20px;
+        }
+        .footer-nav-btn {
+            padding: 8px 16px; border: 1px dashed #95a5a6; border-radius: 6px;
+            background: transparent; color: #7f8c8d; font-size: 13px;
+            cursor: pointer; transition: all 0.2s ease;
+            text-decoration: none; display: inline-flex; align-items: center; gap: 5px;
+        }
+        .footer-nav-btn:hover {
+            border-color: #2e86c1; color: #2e86c1;
+        }
+        .footer-nav-btn.disabled {
+            opacity: 0.4; cursor: not-allowed;
+        }
+        .footer-nav-btn.disabled:hover {
+            border-color: #95a5a6; color: #7f8c8d;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(3px);
+            display: none; justify-content: flex-start; align-items: stretch;
+            z-index: 1000; padding: 0;
+        }
+        .modal-overlay.show { display: flex; }
+        .modal {
+            background: #fff; border-radius: 0 12px 12px 0; width: 100%;
+            min-width: calc(100% / 3); max-width: 800px; height: 100vh;
+            display: flex; flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            margin-left: 0;
+        }
+        .modal-header {
+            padding: 20px 25px; border-bottom: 1px solid #ecf0f1;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .modal-title { font-size: 18px; font-weight: 600; color: #1a5276; }
+        .modal-close {
+            width: 32px; height: 32px; border: none; background: #f5f6f8;
+            border-radius: 50%; cursor: pointer; display: flex;
+            align-items: center; justify-content: center; transition: background 0.2s;
+        }
+        .modal-close:hover { background: #ecf0f1; }
+        .modal-content { flex: 1; overflow: hidden; }
+        .modal-content iframe { width: 100%; height: 100%; min-height: 50vh; border: none; }
+
+        /* Source Note */
+        .source-note {
+            text-align: center; font-size: 12px; color: #95a5a6;
+            padding: 20px 0; font-style: italic;
+        }
+
+        /* Toolbar */
+        .toolbar { display: flex; justify-content: flex-end; margin-bottom: 14px; gap: 10px; }
         .toolbar button {
-            padding: 6px 16px;
-            border: 1px solid #d4e6f1;
-            background: #fff;
-            border-radius: 8px;
-            font-size: 13px;
-            color: #2e86c1;
-            cursor: pointer;
-            transition: all 0.2s;
+            padding: 6px 16px; border: 1px solid #d4e6f1; background: #fff;
+            border-radius: 8px; font-size: 13px; color: #2e86c1; cursor: pointer; transition: all 0.2s;
         }
-        .toolbar button:hover {
-            background: #eaf2f8;
-        }
+        .toolbar button:hover { background: #eaf2f8; }
     </style>
 </head>
 <body>
@@ -639,31 +319,22 @@
 
     <!-- Header -->
     <div class="header">
-        <span class="tag">学习日推 · Day 1</span>
-        <h1>解读帕乔利的财富密码</h1>
-        <div class="subtitle">《财报就像一本故事书》第1章 · P19-P37</div>
-        <div class="meta">
-            <span>预计用时 30-50 分钟</span>
-            <span>2026-03-24</span>
+        <div class="progress-indicator">
+            <span>第一阶段</span>
+            <span>·</span>
+            <span>第1天/共7天</span>
         </div>
-    </div>
-
-    <!-- Goal Card -->
-    <div class="goal-card">
-        <h2>今日学习目标</h2>
-        <p style="font-size:14px; margin-bottom:10px; color:#555;">建立对"财务报表"的基本认知框架，学完后你应该能回答以下问题：</p>
-        <ul>
-            <li>财务报表和投资赚钱有什么关系？</li>
-            <li>为什么看懂财报是投资者的必备能力？</li>
-            <li>什么是"帕乔利密码"？</li>
-        </ul>
+        <h1>自序与解读帕乔利的财富密码</h1>
+        <div class="subtitle">《财报就像一本故事书》自序 + 第1章（上）· P6-10, P19-P27</div>
+        <div class="meta">
+            <span>预计学习 35-40 分钟</span>
+            <span>核心：财报故事书理念、帕乔利密码、三大修养</span>
+        </div>
     </div>
 
     <!-- Nav -->
     <div class="nav-bar">
-        <a class="home" href="index.html">📖 目录</a>
-        <a class="current">Day 1</a>
-        <a class="next" href="Day_02.html">Day 2 →</a>
+        <!-- 导航栏将由 _nav-loader.js 动态生成 -->
     </div>
 
     <!-- Toolbar -->
@@ -672,527 +343,419 @@
         <button onclick="toggleAll(false)">全部收起</button>
     </div>
 
-    <!-- Section 1 -->
-    <div class="section s1" id="sec1">
+    <!-- Section 1: 作者寄语 -->
+    <div class="section s1 open" id="sec1">
         <div class="section-header" onclick="toggle('sec1')">
             <div class="left">
                 <div class="section-number">1</div>
-                <h3>什么是"帕乔利密码"？</h3>
+                <h3>作者寄语：财报就像一本故事书</h3>
             </div>
-            <span class="time">5 分钟</span>
             <span class="arrow">▼</span>
         </div>
         <div class="section-body">
             <div class="section-content">
-                <p>500多年前，一位叫<strong>卢卡·帕乔利</strong>（Luca Pacioli）的意大利修士，系统性地发明了<strong>复式记账法</strong>——现代会计的基础。</p>
+                <div class="quote-box">
+                    "财报就像一本故事书，经理人写它，投资人读它。它吐露企业的竞争力，也刻画企业的兴衰。"
+                </div>
 
-                <p>他的贡献是什么？<strong>一切商业活动都可以转化为以"Money"为符号的表达</strong>。再大的公司（通用电气、微软、联想），它们在市场竞争中创造或亏损的财富，都能压缩成薄薄的几张<strong>财务报表</strong>。</p>
+                <p>本书作者<strong>刘顺仁教授</strong>是台湾大学会计学系暨研究所教授，在台大EMBA课程中教授财务报表分析多年。他发现许多同学没有任何会计学背景，如何利用非技术性的语言、生动活泼的例子，引导同学亲近令大多数人"望之生畏"的财务报表，是他在会计教学中最大的挑战。</p>
 
-                <p>这也就是作者所说的<strong>"帕乔利密码"</strong>——财务数字背后隐藏着企业的竞争力密码。</p>
+                <h4>三个学习目标</h4>
+                <p>通过本书，作者希望实现三个目标：</p>
+                <ol class="number-list">
+                    <li><strong>教企业、政府、非营利组织的经理人轻松看懂基本的财务报表</strong>，并帮助他们活用财务报表，增加组织竞争力，为个人与企业创造财富。</li>
+                    <li><strong>教投资人透过财务报表趋吉避凶</strong>，增加投资报酬率，降低投资风险。</li>
+                    <li><strong>作为高校相关专业师生和会计师事务所财务报表分析课程的教育材料</strong>。</li>
+                </ol>
+
+                <div class="section-title" style="font-size: 15px; color: #2c3e50; margin: 20px 0 10px 0; padding-left: 10px; border-left: 3px solid #2e86c1;">这是中国人创造财富的黄金时代</div>
+
+                <p>太史学家司马迁在《史记·货殖列传》中对财富的创造提出一针见血的论点：</p>
 
                 <div class="highlight-box">
-                    <strong>延伸阅读</strong>：达·芬奇曾跟帕乔利学了3年几何学，因为太沉迷而耽误了艺术创作。他为帕乔利的著作《神圣比例学》画了六十多幅精美插图。下次看《蒙娜丽莎》时，别忘了那个隐藏的"M"可能代表的是 Money！
+                    <strong>"无财作力，少有斗智，既饶争时。"</strong><br>
+                    （没钱靠体力，钱少靠智力，钱多靠掌握时机。）
                 </div>
 
-                <div class="insight-box">
-                    <strong>对你的意义</strong>：你之前买股票看K线和均线，现在要加一个维度——看财务数字。财报就是企业的"体检报告"，帮你判断一家公司是健康还是有病。
-                </div>
+                <p>改革开放后的中国，凭借体力只能造就个人温饱，无法累积财富。真正创造巨大财富的是"既饶争时"——追随金融市场对中国经济发展抱持高度评价的黄金时机，以创业家或投资人的角色创造千百倍的财富。而<strong>通往财富之路的关键密码，就是企业的财务报表</strong>。</p>
+
+                <h4>本书架构</h4>
+                <table class="content-table">
+                    <tr><th>篇章</th><th>章节</th><th>内容</th></tr>
+                    <tr><td><strong>心法篇</strong></td><td>第1-3章</td><td>财务报表背后的基本概念</td></tr>
+                    <tr><td><strong>招式篇</strong></td><td>第4-7章</td><td>四大报表的基本概念与管理应用</td></tr>
+                    <tr><td><strong>进阶篇</strong></td><td>第8-12章</td><td>资产品质、盈余品质、竞争力分析</td></tr>
+                </table>
             </div>
         </div>
     </div>
 
-    <!-- Section 2 -->
+    <!-- Section 2: 达·芬奇画作中的M字密码 -->
     <div class="section s2" id="sec2">
         <div class="section-header" onclick="toggle('sec2')">
             <div class="left">
                 <div class="section-number">2</div>
-                <h3>面对财报需要"智、诚、勇"</h3>
+                <h3>达·芬奇画作中的M字密码</h3>
             </div>
-            <span class="time">20 分钟</span>
             <span class="arrow">▼</span>
         </div>
         <div class="section-body">
             <div class="section-content">
-
-                <h4>智 —— 用智慧解读</h4>
-                <p>财报同时扮演两种角色：</p>
-                <table class="content-table">
-                    <tr>
-                        <th style="width:80px;">角色</th>
-                        <th>财报的作用</th>
-                        <th>实际应用</th>
-                    </tr>
-                    <tr>
-                        <td><strong>望远镜</strong></td>
-                        <td>协助企业制定长期竞争策略</td>
-                        <td>沃尔玛通过财报发现：定价低1元，销量多3倍，总获利反而增加</td>
-                    </tr>
-                    <tr>
-                        <td><strong>显微镜</strong></td>
-                        <td>发现经营活动中细微的问题</td>
-                        <td>当营收下降时，追问是经济衰退、竞争侵蚀、还是质量问题</td>
-                    </tr>
-                </table>
-
-                <p><strong>关键心态</strong>：财报数字本身没有意义，有意义的是<strong>数字背后的商业活动质量</strong>。</p>
+                <p>2003年，美国悬疑小说家丹·布朗出版了《达·芬奇密码》，全球畅销4000多万册。作者丰富的想象力让达·芬奇的《最后的晚餐》和《蒙娜丽莎的微笑》不再是纯粹的艺术创作，而是隐含了可以动摇基督教信仰基础的天大秘密。</p>
+                
+                <p>如果也容我发挥一下天马行空的想象力，那么我想说，在《最后的晚餐》画作中，丹·布朗指证历历的那个隐藏的"M"，<strong>不是抹大拉的玛丽亚（Mary Magdalene），而是"Money"（金钱）</strong>。</p>
 
                 <div class="story-card">
-                    <div class="story-title">麦当劳的故事</div>
-                    <p>1940年，麦当劳兄弟做了个简单的财务分析，发现<strong>80%的利润来自汉堡</strong>。于是他们把产品线从25项砍到9项，汉堡从30美分降到15美分。从此走上了成为世界级企业的道路。</p>
+                    <div class="story-title">达·芬奇与帕乔利的渊源</div>
+                    <p>自1496年起，达·芬奇跟着意大利修士<strong>卢卡·帕乔利（Luca Pacioli, 1445-1515）</strong>在米兰学了3年几何学，据说他还因为太过沉迷而耽误了艺术创作。</p>
+                    <p>为了答谢恩师，达·芬奇为帕乔利1509年的著作《神圣比例学》画了六十多幅精美的插图。</p>
                 </div>
 
-                <div class="insight-box">
-                    <strong>对你的意义</strong>：以后买股票，不要只看股价涨跌。先问问自己——这家公司<strong>靠什么赚钱</strong>？利润从哪来？
-                </div>
-
-                <h4>诚 —— 财务数据的可靠性</h4>
-                <p>财报的可靠性取决于编制者的<strong>诚信</strong>。</p>
-
-                <ul class="bullet-list">
-                    <li><strong>课责性（Accountability）</strong>：企业经理人要对股东负责，财报就是"交代"的工具</li>
-                    <li><strong>巴菲特的态度</strong>：他在年报后面附上亲手写的《股东手册》，明确说"我们的经营态度是合伙事业"，他99.9%的财富集中在自家股票上</li>
-                    <li><strong>王永庆的价值观</strong>：担任台塑董事长不支薪，"公司赚的钱就是薪水"，批评某些电子公司"员工配股那么高，小股东都破产了"</li>
-                    <li><strong>汇丰银行的省钱文化</strong>：出差3小时内可飞达的航程，一律坐经济舱，连CEO也不例外</li>
-                </ul>
-
-                <div class="danger-box">
-                    <strong>财报欺诈的信号</strong>：
-                    <ul class="bullet-list danger-list" style="margin-top:6px;">
-                        <li>管理层频繁更换审计师</li>
-                        <li>会计政策频繁变更</li>
-                        <li>关联交易过多</li>
-                    </ul>
-                </div>
-
-                <div class="insight-box">
-                    <strong>对你的意义</strong>：选股票时，优先选管理层诚信的公司。如果一个公司频繁换审计师或会计政策，可能是危险信号。
-                </div>
-
-                <h4>勇 —— 勇于面对残酷的事实</h4>
-                <p>这一节对你<strong>特别重要</strong>，因为你的测评结果显示<strong>"亏损时加仓"</strong>——这正是作者要纠正的行为。</p>
+                <p>1494年，帕乔利在威尼斯出版了会计学的鼻祖之作《算术、几何、比与比例概要》，系统地介绍了"威尼斯会计方法"，也就是所谓的<strong>"复式会计"（double entry bookkeeping）</strong>。</p>
 
                 <div class="highlight-box">
-                    <strong>"斯托克代尔悖论"</strong>："坚持你一定会成功的信念，绝不放弃希望，但必须<strong>勇于面对最严酷的事实</strong>。"
-                </div>
-
-                <p><strong>投资者的致命偏误（行为经济学）</strong>：</p>
-                <table class="content-table">
-                    <tr>
-                        <th>状态</th>
-                        <th>典型行为</th>
-                        <th>后果</th>
-                    </tr>
-                    <tr>
-                        <td>股票小幅盈利</td>
-                        <td>急着卖出，实现获利</td>
-                        <td style="color:#e74c3c;">错过大涨机会</td>
-                    </tr>
-                    <tr>
-                        <td>股票大幅亏损</td>
-                        <td>不愿卖出，拒绝承认亏损</td>
-                        <td style="color:#e74c3c;">越亏越多，甚至血本无归</td>
-                    </tr>
-                </table>
-
-                <p>这种现象叫做<strong>"心理会计"（Mental Accounting）</strong>——投资者在心里设了一个"亏损账户"，卖出股票就意味着"正式确认亏损"，这太痛苦了，所以选择逃避。</p>
-
-                <p>结果是典型的<strong>"汰强存弱"策略</strong>：卖掉赚钱的好股票，留下亏钱的烂股票。</p>
-
-                <div class="story-card">
-                    <div class="story-title">英特尔的教训</div>
-                    <p>1985年，英特尔的DRAM业务已经没有竞争力了（研发投入占90%，但只带来5%的营业额）。管理层犹豫再三，最终还是<strong>壮士断腕</strong>，放弃DRAM专攻微处理器，才有了90年代的辉煌。如果不勇于面对财报数字，英特尔可能早已倒闭。</p>
-                </div>
-
-                <p><strong>专业做空者专门猎杀三类公司</strong>：</p>
-                <ol class="numbered-list">
-                    <li>高估获利能力的公司</li>
-                    <li>营运模式有问题的公司</li>
-                    <li>有舞弊嫌疑的公司</li>
-                </ol>
-
-                <div class="danger-box">
-                    <strong>对你的意义</strong>：你之前亏损加仓的行为，正是"心理会计"的典型表现。从今天开始，培养一个习惯——<strong>面对亏损时，先看事实再决定，而不是用加仓来逃避"承认错误"的痛苦</strong>。
+                    <strong>核心观点</strong>：正因为帕乔利的贡献，一切商业活动都可转换为以"Money"为符号的表达。下次当你欣赏达·芬奇的作品时，别忘了其中所隐藏的M字，可能深具会计学含义！
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Section 3 -->
+    <!-- Section 3: 帕乔利的三大法宝 -->
     <div class="section s3" id="sec3">
         <div class="section-header" onclick="toggle('sec3')">
             <div class="left">
                 <div class="section-number">3</div>
-                <h3>灰狗 vs 小Q —— 两种企业家性格</h3>
+                <h3>帕乔利的三大法宝</h3>
             </div>
-            <span class="time">10 分钟</span>
             <span class="arrow">▼</span>
         </div>
         <div class="section-body">
             <div class="section-content">
-                <p>作者用两种狗来比喻不同的管理风格：</p>
+                <p>除了介绍会计方法，帕乔利还在书中大力宣扬商业经营成功的三大法宝：</p>
 
-                <table class="compare-table">
-                    <tr>
-                        <th></th>
-                        <th>灰狗</th>
-                        <th>小Q（导盲犬）</th>
-                    </tr>
-                    <tr>
-                        <td>性格</td>
-                        <td>看到机会就冲，前仆后继</td>
-                        <td>凡事质疑，想清楚再行动</td>
-                    </tr>
-                    <tr>
-                        <td>优势</td>
-                        <td>抢占先机</td>
-                        <td>稳健、后发先至</td>
-                    </tr>
-                    <tr>
-                        <td>风险</td>
-                        <td>冲太快，补给线跟不上</td>
-                        <td>可能错失第一时机</td>
-                    </tr>
-                    <tr>
-                        <td>代表</td>
-                        <td>丰臣秀吉</td>
-                        <td>华硕董事长施崇棠</td>
-                    </tr>
-                    <tr>
-                        <td>关键</td>
-                        <td>需要严格的财务规划</td>
-                        <td>"再思而已"而非"三思而行"</td>
-                    </tr>
+                <table class="content-table">
+                    <tr><th>#</th><th>法宝</th><th>现代意义</th></tr>
+                    <tr><td>1</td><td><strong>充足的现金或信用</strong></td><td>企业的血液，维持营运的基础</td></tr>
+                    <tr><td>2</td><td><strong>优良的会计人员</strong></td><td>确保财务信息的准确可靠</td></tr>
+                    <tr><td>3</td><td><strong>卓越的会计信息系统</strong></td><td>让管理者一眼看清财务状况</td></tr>
                 </table>
 
-                <div class="story-card">
-                    <div class="story-title">华硕的案例</div>
-                    <p>2001年华硕现金占总资产近70%，被批评"只会赚钱不会投资"。但2001-2003年华硕用这些现金大举投资，总金额逐年递增（66亿 → 96亿 → 140亿新台币），到2004年竞争对手被远远甩开。</p>
-                    <p>这就是"小Q"的智慧——<strong>平时谨慎储备，时机成熟时果断出击</strong>。</p>
-                </div>
-
-                <div class="highlight-box">
-                    <strong>最难能可贵的是同时具备两者特质</strong>：业务开拓如灰狗，财务管理如小Q。比如比尔·盖茨和迈克尔·戴尔。
-                </div>
-
                 <div class="insight-box">
-                    <strong>对你的意义</strong>：冲动买入是灰狗风格，但缺乏灰狗的决断力来止损。建议你向小Q学习——<strong>买入前想清楚，买入后严格执行纪律</strong>。
+                    <strong>王永庆的观点</strong>：有"经营之神"美誉的台湾塑料公司董事长王永庆先生认为，企业经营的两大支柱是"计算机系统"和"会计制度"，而计算机系统的很大部分是用来支持会计制度的。
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Section 4 -->
+    <!-- Section 4: 什么是帕乔利密码？ -->
     <div class="section s4" id="sec4">
         <div class="section-header" onclick="toggle('sec4')">
             <div class="left">
                 <div class="section-number">4</div>
-                <h3>沃尔玛"竞争力三部曲"</h3>
+                <h3>什么是帕乔利密码？</h3>
             </div>
-            <span class="time">5 分钟</span>
             <span class="arrow">▼</span>
         </div>
         <div class="section-body">
             <div class="section-content">
-                <p>作者用邓丽君的三首歌来诠释沃尔玛的经营哲学：</p>
-
-                <table class="content-table">
-                    <tr>
-                        <th style="width:130px;">歌曲</th>
-                        <th style="width:100px;">含义</th>
-                        <th>沃尔玛的做法</th>
-                    </tr>
-                    <tr>
-                        <td>《我只在乎你》</td>
-                        <td>以顾客为中心</td>
-                        <td>全心对待每一位客户，超越预期</td>
-                    </tr>
-                    <tr>
-                        <td>《何日君再来》</td>
-                        <td>顾客回头率</td>
-                        <td>年报中清楚区分新卖场和旧卖场的营收贡献</td>
-                    </tr>
-                    <tr>
-                        <td>《路边野花不要采》</td>
-                        <td>品牌忠诚度</td>
-                        <td>同时维护顾客和供应商的忠诚，积极经营社区形象</td>
-                    </tr>
-                </table>
-
-                <p>沃尔玛的管理活动虽然复杂，策略却十分"简易"，财报也出奇的单纯。自1971年上市以来始终保持营收获利的高度增长。</p>
+                <p>帕乔利所提倡的会计方法，可以把复杂的经济活动及企业竞争的结果，转换成以货币为表达单位的会计数字，这就是笔者所谓的<strong>"帕乔利密码"</strong>。</p>
 
                 <div class="highlight-box">
-                    <strong>启示</strong>：最好的经营策略往往是简单的。财报也一样——不需要复杂的技巧，关键是看懂数字背后的商业逻辑。
+                    <strong>压缩威力</strong>：这些密码拥有极强大的压缩威力——即使再大型的公司（如通用电气、微软及联想），它们在市场竞争中所创造或亏蚀的财富，都能压缩汇总成薄薄的几张财务报表。
+                </div>
+
+                <p>这些财务报表透露的讯息必须丰富、充足，否则投资人或银行不愿意提供公司资金。但是，这些财务报表又不能过分透明，否则竞争对手会轻而易举地学走公司的经营方法。因此，帕乔利密码所隐含的讯息往往不易了解。</p>
+
+                <div class="insight-box">
+                    <strong>本书目的</strong>：帮助大家活用帕乔利密码，进而培养个人及组织高度的竞争力；对于投资者来说，也能透过薄薄的几张财务报表，充分读懂企业透露的信息，提升投资报酬率。
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Section 5: Summary -->
+    <!-- Section 5: 管理者的三种修养 -->
     <div class="section s5" id="sec5">
         <div class="section-header" onclick="toggle('sec5')">
             <div class="left">
                 <div class="section-number">5</div>
-                <h3>今日收获</h3>
+                <h3>管理者的三种修养</h3>
             </div>
-            <span class="time">总结</span>
             <span class="arrow">▼</span>
         </div>
         <div class="section-body">
             <div class="section-content">
-                <blockquote>财务报表不是冰冷的数字，它是企业竞争力的一面镜子。</blockquote>
-                <blockquote>看懂财报的核心不是背公式，而是培养"从数字看到商业活动"的能力。</blockquote>
-                <blockquote>投资者最大的敌人不是市场，而是自己的"心理会计"——承认亏损是痛苦的，但不承认亏损的代价更大。</blockquote>
+                <p>面对帕乔利密码，管理者要有<strong>"智、诚、勇"</strong>三种修养。</p>
+
+                <h4>以智慧解读帕乔利密码</h4>
+                <p>帕乔利密码对管理的最大贡献，不只是帮助经理人了解过去，更重要的是在于<strong>启发未来</strong>。事实上，一个杰出企业的发展，经常奠基于看到简单会计数字后所产生的智慧，而这些智慧开创了新的竞争模式。</p>
+
+                <div class="story-card">
+                    <div class="story-title">麦当劳为什么爱卖汉堡？</div>
+                    <p>1937年，麦当劳兄弟（Dick and Mac）在美国加州帕萨迪纳销售汉堡、热狗、奶昔等25项产品。1940年以后，他们做了个简单的财务报表分析，意外地发现<strong>80%的生意额来自汉堡</strong>。虽然三明治或猪排等产品味道很好，但销售平平。</p>
+                    <p>麦当劳兄弟于是决定<strong>简化产品线</strong>，专攻单价上销售量大的产品。他们将产品由25项<strong>减少为9项</strong>，并将汉堡价格由30美分<strong>降低到15美分</strong>。</p>
+                </div>
+
+                <div class="highlight-box">
+                    <strong>结果</strong>：从此之后，麦当劳的销售及获利激增，为后来发展成世界级企业奠定了基础。
+                </div>
+
+                <div class="story-card">
+                    <div class="story-title">沃尔玛的低价策略</div>
+                    <p>沃尔玛的创办人<strong>沃尔顿（Sam Walton, 1918-1992）</strong>，在自传中提到他从财务报表中体会的简单算术："如果某个货品的进价是8角，我发现定价1元时比定价1元2角时的销售量大得多了3倍，所以总获利还是增加了。真是简单，这就是折价促销的基本原理！"</p>
+                </div>
+
+                <table class="content-table">
+                    <tr><th>指标</th><th>1971年</th><th>2006年</th><th>增长倍数</th></tr>
+                    <tr><td>营收</td><td>7800万美元</td><td>2600亿美元</td><td>333倍</td></tr>
+                    <tr><td>获利</td><td>290万美元</td><td>90亿美元</td><td>310倍</td></tr>
+                </table>
+
+                <div class="insight-box">
+                    <strong>核心逻辑</strong>：智者可以把帕乔利密码当成是<strong>"望远镜"</strong>，协助企业形成长期的竞争策略；也可以当成<strong>"显微镜"</strong>，协助企业产生改善管理活动的细腻作为。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 6: 今日要点总结 -->
+    <div class="section s6" id="sec6">
+        <div class="section-header" onclick="toggle('sec6')">
+            <div class="left">
+                <div class="section-number">★</div>
+                <h3>今日要点总结</h3>
+            </div>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="section-body">
+            <div class="section-content">
+                <table class="content-table">
+                    <tr><th>要点</th><th>内容</th></tr>
+                    <tr><td><strong>财报故事书</strong></td><td>经理人写财报，投资人读财报，从中读懂企业竞争力</td></tr>
+                    <tr><td><strong>帕乔利密码</strong></td><td>将复杂经济活动转换为会计数字的方法</td></tr>
+                    <tr><td><strong>压缩威力</strong></td><td>大型公司的财富变化可汇总成几张报表</td></tr>
+                    <tr><td><strong>三大法宝</strong></td><td>充足现金/信用、优良会计人员、卓越会计信息系统</td></tr>
+                    <tr><td><strong>三大修养</strong></td><td>智（解读能力）、诚（诚信原则）、勇（面对事实）</td></tr>
+                    <tr><td><strong>创造财富</strong></td><td>无财作力 → 少有斗智 → 既饶争时</td></tr>
+                </table>
             </div>
         </div>
     </div>
 
     <!-- Quiz Section -->
     <div class="quiz-section" id="quiz">
-        <h2>课后复习题</h2>
+        <h2>📝 课后自测</h2>
 
         <div class="quiz-item" data-answer="1">
             <div class="quiz-question">
                 <span class="quiz-num">Q1.</span>
-                <span>1. "帕乔利密码"指的是什么？</span>
+                <span>"帕乔利密码"指的是什么？</span>
             </div>
             <div class="quiz-options">
                 <div class="quiz-option" data-idx="0">
                     <div class="radio"></div>
-                    <span>一种破解银行密码的黑客技术</span>
+                    <span>达·芬奇画作中的隐藏符号</span>
                 </div>
                 <div class="quiz-option" data-idx="1">
                     <div class="radio"></div>
-                    <span>财务数字背后隐藏的企业竞争力密码</span>
+                    <span>将经济活动转换为会计数字的方法</span>
                 </div>
                 <div class="quiz-option" data-idx="2">
                     <div class="radio"></div>
-                    <span>股市中K线和均线的技术分析模式</span>
+                    <span>一种加密算法</span>
                 </div>
                 <div class="quiz-option" data-idx="3">
                     <div class="radio"></div>
-                    <span>达·芬奇画作中隐藏的秘密符号</span>
+                    <span>威尼斯商人的交易规则</span>
                 </div>
             </div>
             <div class="quiz-explanation correct-exp">
-                <strong>正确！</strong> 帕乔利发明了复式记账法，一切商业活动都可以转化为财务数字。这些数字背后隐藏着企业的竞争力信息，作者称之为"帕乔利密码"。
+                <strong>正确！</strong>帕乔利密码是指将复杂的经济活动及企业竞争结果，转换成以货币为表达单位的会计数字的方法。这些数字拥有压缩威力，能把大型公司的财富变化汇总成几张财务报表。
             </div>
             <div class="quiz-explanation wrong-exp">
-                <strong>不正确。</strong> "帕乔利密码"指的是财务数字背后隐藏的企业竞争力密码。帕乔利发明了复式记账法，一切商业活动都可以转化为财务数字。
+                <strong>不正确。</strong>帕乔利密码是指将经济活动转换为会计数字的方法，而非达·芬奇画作中的符号或加密算法。
             </div>
         </div>
 
         <div class="quiz-item" data-answer="2">
             <div class="quiz-question">
                 <span class="quiz-num">Q2.</span>
-                <span>2. 财报为什么既是"望远镜"又是"显微镜"？</span>
+                <span>帕乔利提出的商业经营三大法宝不包括以下哪项？</span>
             </div>
             <div class="quiz-options">
                 <div class="quiz-option" data-idx="0">
                     <div class="radio"></div>
-                    <span>望远镜用来预测股价，显微镜用来找庄家</span>
+                    <span>充足的现金或信用</span>
                 </div>
                 <div class="quiz-option" data-idx="1">
                     <div class="radio"></div>
-                    <span>望远镜看远期战略方向，显微镜发现当前经营细节问题</span>
+                    <span>优良的会计人员</span>
                 </div>
                 <div class="quiz-option" data-idx="2">
                     <div class="radio"></div>
-                    <span>望远镜看大盘走势，显微镜看个股涨跌</span>
+                    <span>强大的营销团队</span>
                 </div>
                 <div class="quiz-option" data-idx="3">
                     <div class="radio"></div>
-                    <span>望远镜用来放大利润，显微镜用来缩小亏损</span>
+                    <span>卓越的会计信息系统</span>
                 </div>
             </div>
             <div class="quiz-explanation correct-exp">
-                <strong>正确！</strong> 作为望远镜，财报帮助制定长期竞争策略（如沃尔玛的低价策略）；作为显微镜，财报帮助发现经营中的细微问题（如营收下降的真正原因）。
+                <strong>正确！</strong>三大法宝是：充足的现金或信用、优良的会计人员、卓越的会计信息系统。强大的营销团队虽然重要，但不是帕乔利提出的三大法宝之一。
             </div>
             <div class="quiz-explanation wrong-exp">
-                <strong>不正确。</strong> 正确答案是：望远镜用于制定长期竞争策略（如沃尔玛通过财报发现低价策略的威力），显微镜用于发现当前经营细节中的问题（如营收下降的真正原因）。
+                <strong>不正确。</strong>三大法宝不包括"强大的营销团队"。正确答案是：充足的现金或信用、优良的会计人员、卓越的会计信息系统。
             </div>
         </div>
 
-        <div class="quiz-item" data-answer="3">
+        <div class="quiz-item" data-answer="1">
             <div class="quiz-question">
                 <span class="quiz-num">Q3.</span>
-                <span>3. 什么是"心理会计"？它如何影响投资行为？</span>
+                <span>麦当劳兄弟通过财务报表分析做出了什么关键决策？</span>
             </div>
             <div class="quiz-options">
                 <div class="quiz-option" data-idx="0">
                     <div class="radio"></div>
-                    <span>投资者用Excel记账来管理投资收益</span>
+                    <span>增加产品种类</span>
                 </div>
                 <div class="quiz-option" data-idx="1">
                     <div class="radio"></div>
-                    <span>投资者在心里把每只股票单独记账，互不关联</span>
+                    <span>简化产品线，专攻汉堡</span>
                 </div>
                 <div class="quiz-option" data-idx="2">
                     <div class="radio"></div>
-                    <span>投资者因不愿承认亏损而持有亏损股，急于卖出盈利股，导致"汰强存弱"</span>
+                    <span>提高汉堡价格</span>
                 </div>
                 <div class="quiz-option" data-idx="3">
                     <div class="radio"></div>
-                    <span>投资者只关注账面利润而不关心现金流</span>
+                    <span>关闭部分门店</span>
                 </div>
             </div>
             <div class="quiz-explanation correct-exp">
-                <strong>正确！</strong> "心理会计"使投资者不愿"正式确认亏损"（卖出亏损股太痛苦），结果卖掉赚钱的好股票、留下亏钱的烂股票——这就是"汰强存弱"。你之前"亏损加仓"的行为就是心理会计的典型表现。
+                <strong>正确！</strong>麦当劳兄弟发现80%的生意额来自汉堡，于是将产品由25项减少为9项，并将汉堡价格由30美分降低到15美分，从而奠定了快餐帝国的基础。
             </div>
             <div class="quiz-explanation wrong-exp">
-                <strong>不正确。</strong> "心理会计"指的是投资者在心里设了一个"亏损账户"，卖出股票意味着"正式确认亏损"，太痛苦了。所以投资者会急于卖出盈利股、死守亏损股，导致"汰强存弱"——卖掉赚钱的好股，留下亏钱的烂股。
+                <strong>不正确。</strong>麦当劳兄弟的关键决策是简化产品线、专攻汉堡，而非增加产品种类或提高价格。
             </div>
         </div>
 
         <div class="quiz-item" data-answer="1">
             <div class="quiz-question">
                 <span class="quiz-num">Q4.</span>
-                <span>4. 麦当劳兄弟通过财务分析做出了什么关键决策？</span>
+                <span>管理者面对帕乔利密码需要具备的三种修养是？</span>
             </div>
             <div class="quiz-options">
                 <div class="quiz-option" data-idx="0">
                     <div class="radio"></div>
-                    <span>发现员工工资占比过高，于是大规模裁员降本</span>
+                    <span>智、仁、勇</span>
                 </div>
                 <div class="quiz-option" data-idx="1">
                     <div class="radio"></div>
-                    <span>发现80%利润来自汉堡，于是精简产品线、降低汉堡价格</span>
+                    <span>智、诚、勇</span>
                 </div>
                 <div class="quiz-option" data-idx="2">
                     <div class="radio"></div>
-                    <span>发现开店成本太高，于是转向特许经营模式</span>
+                    <span>信、望、爱</span>
                 </div>
                 <div class="quiz-option" data-idx="3">
                     <div class="radio"></div>
-                    <span>发现饮料利润率最高，于是推出超大杯饮品</span>
+                    <span>真、善、美</span>
                 </div>
             </div>
             <div class="quiz-explanation correct-exp">
-                <strong>正确！</strong> 1940年麦当劳兄弟做了简单的财务分析，发现80%利润来自汉堡。于是把产品线从25项砍到9项，汉堡从30美分降到15美分，从此走上成为世界级企业的道路。这就是"用智慧解读财报数字"的经典案例。
+                <strong>正确！</strong>三种修养是：智（以智慧解读）、诚（以诚信编制）、勇（用勇气面对）。这是贯穿全书的核心框架。
             </div>
             <div class="quiz-explanation wrong-exp">
-                <strong>不正确。</strong> 麦当劳兄弟通过财务分析发现80%的利润来自汉堡，于是把产品线从25项砍到9项，汉堡从30美分降到15美分。这个决策为他们后来成为世界级企业奠定了基础。
+                <strong>不正确。</strong>正确答案是"智、诚、勇"——以智慧解读帕乔利密码，以诚信编制财务报表，用勇气面对严酷事实。
             </div>
         </div>
 
-        <div class="quiz-item" data-answer="2">
+        <div class="quiz-item" data-answer="1">
             <div class="quiz-question">
                 <span class="quiz-num">Q5.</span>
-                <span>5. 以下哪个不是财报欺诈的危险信号？</span>
+                <span>本书作者刘顺仁教授提出的"创造财富"三阶段是什么？</span>
             </div>
             <div class="quiz-options">
                 <div class="quiz-option" data-idx="0">
                     <div class="radio"></div>
-                    <span>管理层频繁更换审计师</span>
+                    <span>学习、实践、成功</span>
                 </div>
                 <div class="quiz-option" data-idx="1">
                     <div class="radio"></div>
-                    <span>会计政策频繁变更</span>
+                    <span>无财作力、少有斗智、既饶争时</span>
                 </div>
                 <div class="quiz-option" data-idx="2">
                     <div class="radio"></div>
-                    <span>公司每年持续分红给股东</span>
+                    <span>勤奋、聪明、幸运</span>
                 </div>
                 <div class="quiz-option" data-idx="3">
                     <div class="radio"></div>
-                    <span>关联交易过多</span>
+                    <span>创业、扩张、上市</span>
                 </div>
             </div>
             <div class="quiz-explanation correct-exp">
-                <strong>正确！</strong> 持续分红是正常且积极的行为（巴菲特、王永庆都强调对股东的责任）。财报欺诈的危险信号是：频繁更换审计师、频繁变更会计政策、关联交易过多。
+                <strong>正确！</strong>作者引用司马迁《史记·货殖列传》中的观点："无财作力，少有斗智，既饶争时"——没钱靠体力，钱少靠智力，钱多靠掌握时机。
             </div>
             <div class="quiz-explanation wrong-exp">
-                <strong>不正确。</strong> "公司每年持续分红给股东"是正常且积极的行为。财报欺诈的三个危险信号是：频繁更换审计师、频繁变更会计政策、关联交易过多。
-            </div>
-        </div>
-
-        <div class="quiz-item" data-answer="0">
-            <div class="quiz-question">
-                <span class="quiz-num">Q6.</span>
-                <span>6. 华硕董事长施崇棠的管理风格最接近哪种类型？为什么？</span>
-            </div>
-            <div class="quiz-options">
-                <div class="quiz-option" data-idx="0">
-                    <div class="radio"></div>
-                    <span>小Q型——平时谨慎储备现金，时机成熟后果断出击</span>
-                </div>
-                <div class="quiz-option" data-idx="1">
-                    <div class="radio"></div>
-                    <span>灰狗型——看到投资机会就冲，抢占先机</span>
-                </div>
-                <div class="quiz-option" data-idx="2">
-                    <div class="radio"></div>
-                    <span>混合型——同时具备灰狗和小Q的特质</span>
-                </div>
-                <div class="quiz-option" data-idx="3">
-                    <div class="radio"></div>
-                    <span>不属于任何一种类型</span>
-                </div>
-            </div>
-            <div class="quiz-explanation correct-exp">
-                <strong>正确！</strong> 施崇棠典型的"小Q"风格：2001年华硕现金占总资产近70%，被批评保守。但2001-2003年他果断用这些现金大举投资，到2004年将竞争对手远远甩开。关键是"平时谨慎储备，时机成熟果断出击"。
-            </div>
-            <div class="quiz-explanation wrong-exp">
-                <strong>不正确。</strong> 施崇棠是典型的"小Q"型。2001年华硕现金占总资产近70%，被批评保守。但2001-2003年他果断大举投资，到2004年竞争对手被远远甩开。"同时具备两者"指的是盖茨和戴尔等极少数企业家。
-            </div>
-        </div>
-
-        <div class="quiz-item" data-answer="3">
-            <div class="quiz-question">
-                <span class="quiz-num">Q7.</span>
-                <span>7. 对照你自己的投资行为，以下哪种做法最能纠正"心理会计"的偏误？</span>
-            </div>
-            <div class="quiz-options">
-                <div class="quiz-option" data-idx="0">
-                    <div class="radio"></div>
-                    <span>亏损时加倍买入，摊低成本</span>
-                </div>
-                <div class="quiz-option" data-idx="1">
-                    <div class="radio"></div>
-                    <span>不看账户，等股票自己涨回来</span>
-                </div>
-                <div class="quiz-option" data-idx="2">
-                    <div class="radio"></div>
-                    <span>只买不卖，长期持有所有股票</span>
-                </div>
-                <div class="quiz-option" data-idx="3">
-                    <div class="radio"></div>
-                    <span>买入前设定止损线，触发时无条件执行，不因"不甘心"而加仓</span>
-                </div>
-            </div>
-            <div class="quiz-explanation correct-exp">
-                <strong>正确！</strong> 纠正心理会计的核心是"用纪律代替情绪"。提前设定止损线（如亏损10%），触发时无条件执行，不让"不甘心""再等等"的情绪影响决策。这也是你在投资心得中已经记下的"10%止损纪律"。
-            </div>
-            <div class="quiz-explanation wrong-exp">
-                <strong>不正确。</strong> A"亏损加倍买入"正是你要纠正的行为。B和C都是逃避面对亏损的方式。正确做法是<strong>提前设定止损线，触发时无条件执行</strong>——用纪律代替情绪，这正是你投资心得中已记录的"10%止损纪律"。
+                <strong>不正确。</strong>正确答案是"无财作力、少有斗智、既饶争时"，出自司马迁《史记·货殖列传》。
             </div>
         </div>
 
         <button class="quiz-submit" onclick="submitQuiz()">提交答案</button>
-
         <div class="quiz-result" id="quizResult"></div>
     </div>
 
-    <!-- Bottom Nav -->
-    <div class="bottom-nav">
-        <a class="home" href="index.html">
-            <span class="nav-arrow">📖</span>
-            <div class="nav-text">
-                <small>返回</small>
-                日推目录
-            </div>
+    <!-- Bottom Navigation Drawer -->
+    <div class="bottom-nav-drawer">
+        <div class="drawer-title">延伸阅读</div>
+        <div class="drawer-buttons">
+            <button class="drawer-btn" onclick="openModal('source')">
+                <span>📖</span> 书本原文
+            </button>
+            <button class="drawer-btn" onclick="openModal('reference')">
+                <span>📚</span> 参考资料
+            </button>
+            <!-- Day 01 隐藏QA按钮 -->
+        </div>
+    </div>
+
+    <!-- Page Footer -->
+    <footer class="page-footer">
+        <span class="footer-nav-btn disabled">
+            <span>←</span> 上一篇
+        </span>
+        <a href="index.html" class="footer-nav-btn">
+            <span>📖</span> 回到目录
         </a>
-        <a class="next-link" href="Day_02.html">
-            <div class="nav-text">
-                <small>下一篇</small>
-                Day 2：五大神功
-            </div>
-            <span class="nav-arrow">→</span>
+        <a href="Day_02.html" class="footer-nav-btn">
+            下一篇 <span>→</span>
         </a>
+    </footer>
+
+    <!-- Source Note -->
+    <div class="source-note">
+        内容来源：《财报就像一本故事书》自序 + 第1章，页码P6-10, P19-P27
     </div>
 
 </div>
 
+<!-- 动态导航栏脚本 -->
+<script src="_nav-loader.js"></script>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">标题</h3>
+            <button class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+        <div class="modal-content">
+            <iframe id="modal-iframe" src=""></iframe>
+        </div>
+    </div>
+</div>
+
 <script>
+    // Toggle sections
     function toggle(id) {
         const section = document.getElementById(id);
         section.classList.toggle('open');
@@ -1200,44 +763,19 @@
 
     function toggleAll(open) {
         document.querySelectorAll('.section').forEach(s => {
-            if (open) {
-                s.classList.add('open');
-            } else {
-                s.classList.remove('open');
-            }
+            if (open) s.classList.add('open');
+            else s.classList.remove('open');
         });
     }
 
     // Quiz logic
     const userAnswers = {};
 
-    document.querySelectorAll('.quiz-option').forEach(opt => {
-        opt.addEventListener('click', function() {
-            const item = this.closest('.quiz-item');
-            const options = item.querySelectorAll('.quiz-option');
-            const idx = this.dataset.idx;
-
-            // Don't allow change after submit
-            if (item.classList.contains('submitted')) return;
-
-            options.forEach(o => o.classList.remove('selected'));
-            this.classList.add('selected');
-            userAnswers[item.dataset.answer ? item.getAttribute('data-answer-index') : ''] = idx;
-
-            // Store answer
-            const items = document.querySelectorAll('.quiz-item');
-            const itemIndex = Array.from(items).indexOf(item);
-            userAnswers[itemIndex] = parseInt(idx);
-        });
-    });
-
-    // Fix: properly track answers by index
     document.querySelectorAll('.quiz-item').forEach((item, idx) => {
         item.setAttribute('data-answer-index', idx);
     });
 
     document.querySelectorAll('.quiz-option').forEach(opt => {
-        opt.removeEventListener('click', arguments);
         opt.addEventListener('click', function() {
             const item = this.closest('.quiz-item');
             if (item.classList.contains('submitted')) return;
@@ -1257,7 +795,6 @@
         let correct = 0;
         let total = items.length;
 
-        // Check if all answered
         for (let i = 0; i < total; i++) {
             if (userAnswers[i] === undefined) {
                 const btn = document.querySelector('.quiz-submit');
@@ -1279,13 +816,8 @@
             options.forEach(opt => {
                 const optIdx = parseInt(opt.dataset.idx);
                 opt.style.cursor = 'default';
-
-                if (optIdx === answer) {
-                    opt.classList.add('correct');
-                }
-                if (optIdx === userAnswer && userAnswer !== answer) {
-                    opt.classList.add('wrong');
-                }
+                if (optIdx === answer) opt.classList.add('correct');
+                if (optIdx === userAnswer && userAnswer !== answer) opt.classList.add('wrong');
             });
 
             if (userAnswer === answer) {
@@ -1296,26 +828,61 @@
             }
         });
 
-        // Show result
         const result = document.getElementById('quizResult');
         const pct = Math.round(correct / total * 100);
         result.classList.add('show');
 
         if (pct >= 85) {
             result.className = 'quiz-result show great';
-            result.innerHTML = `${correct}/${total} 正确（${pct}%）<br><span style="font-size:14px;font-weight:400;margin-top:4px;display:block;">掌握得很好，明天继续加油！</span>`;
+            result.innerHTML = `${correct}/${total} 正确（${pct}%）<br><span style="font-size:14px;font-weight:400;margin-top:4px;display:block;">太棒了！帕乔利密码的基础概念已掌握，明天继续学习！</span>`;
         } else if (pct >= 57) {
             result.className = 'quiz-result show good';
-            result.innerHTML = `${correct}/${total} 正确（${pct}%）<br><span style="font-size:14px;font-weight:400;margin-top:4px;display:block;">大部分掌握了，建议重新阅读答错的章节。</span>`;
+            result.innerHTML = `${correct}/${total} 正确（${pct}%）<br><span style="font-size:14px;font-weight:400;margin-top:4px;display:block;">大部分掌握了，建议重新阅读答错的部分。</span>`;
         } else {
             result.className = 'quiz-result show retry';
-            result.innerHTML = `${correct}/${total} 正确（${pct}%）<br><span style="font-size:14px;font-weight:400;margin-top:4px;display:block;">需要再巩固一下，建议重新展开相关章节仔细阅读。</span>`;
+            result.innerHTML = `${correct}/${total} 正确（${pct}%）<br><span style="font-size:14px;font-weight:400;margin-top:4px;display:block;">需要再巩固一下，建议重新阅读本节内容。</span>`;
         }
 
-        // Disable submit
         document.querySelector('.quiz-submit').disabled = true;
         document.querySelector('.quiz-submit').textContent = '已提交';
     }
+
+    // Modal functionality
+    const modalData = {
+        source: { title: '书本原文', src: '../source/Day_01_source.html' },
+        reference: { title: '参考资料', src: '../reference/Day_01_ref.html' }
+    };
+
+    function openModal(type) {
+        const modal = document.getElementById('modal');
+        const title = document.getElementById('modal-title');
+        const iframe = document.getElementById('modal-iframe');
+
+        title.textContent = modalData[type].title;
+        iframe.src = modalData[type].src;
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(event) {
+        if (event && event.target !== event.currentTarget) return;
+
+        const modal = document.getElementById('modal');
+        const iframe = document.getElementById('modal-iframe');
+
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+        setTimeout(() => {
+            iframe.src = '';
+        }, 300);
+    }
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
 </script>
 
 </body>

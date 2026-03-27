@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 06 - 成一家之言：经理人判断差异 | 财报学习日推</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: #f5f6f8;
+            color: #2c3e50;
+            line-height: 1.8;
+            min-height: 100vh;
+        }
+
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1a5276 0%, #2e86c1 100%);
+            color: #fff;
+            padding: 32px 28px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(26, 82, 118, 0.25);
+        }
+        .header .progress-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.2);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+        .header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        .header .subtitle { font-size: 15px; opacity: 0.9; }
+        .header .meta { display: flex; gap: 20px; margin-top: 16px; font-size: 13px; opacity: 0.8; }
+
+        /* Toolbar */
+        .toolbar { display: flex; justify-content: flex-end; margin-bottom: 14px; gap: 10px; }
+        .toolbar button {
+            padding: 6px 16px; border: 1px solid #d4e6f1; background: #fff;
+            border-radius: 8px; font-size: 13px; color: #2e86c1; cursor: pointer; transition: all 0.2s;
+        }
+        .toolbar button:hover { background: #eaf2f8; }
+
+        /* Section */
+        .section {
+            background: #fff; border-radius: 12px; margin-bottom: 14px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06); overflow: hidden; transition: box-shadow 0.3s;
+        }
+        .section:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .section-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 24px; cursor: pointer; user-select: none; transition: background 0.2s;
+        }
+        .section-header:hover { background: #f8f9fb; }
+        .section-header .left { display: flex; align-items: center; gap: 14px; }
+        .section-number {
+            width: 32px; height: 32px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 15px; color: #fff; flex-shrink: 0;
+        }
+        .s1 .section-number { background: #c0392b; }
+        .s2 .section-number { background: #2e86c1; }
+        .s3 .section-number { background: #27ae60; }
+        .s4 .section-number { background: #8e44ad; }
+        .s5 .section-number { background: #e67e22; }
+        .s6 .section-number { background: #16a085; }
+
+        .section-header h3 { font-size: 16px; font-weight: 600; color: #2c3e50; }
+        .section-header .arrow {
+            font-size: 14px; color: #bdc3c7; transition: transform 0.3s;
+            flex-shrink: 0; margin-left: 12px;
+        }
+        .section.open .arrow { transform: rotate(180deg); }
+        .section-body { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .section.open .section-body { max-height: 5000px; }
+        .section-content { padding: 0 24px 24px 24px; }
+
+        /* Content Styles */
+        .section-content p { margin-bottom: 12px; font-size: 15px; color: #34495e; }
+        .section-content strong { color: #1a5276; }
+        .section-content h4 {
+            font-size: 15px; color: #2c3e50; margin: 18px 0 8px 0;
+            padding-bottom: 6px; border-bottom: 1px solid #eee;
+        }
+        .section-content h4:first-child { margin-top: 0; }
+
+        .highlight-box {
+            background: #fef9e7; border-left: 4px solid #f39c12;
+            padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0;
+            font-size: 14px; color: #7d6608;
+        }
+        .insight-box {
+            background: #eaf2f8; border-left: 4px solid #2e86c1;
+            padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0;
+            font-size: 14px; color: #1a5276;
+        }
+
+        /* Page Footer */
+        .page-footer {
+            display: flex; justify-content: center; align-items: center;
+            gap: 20px; padding: 30px 0; border-top: 1px solid #ecf0f1; margin-top: 20px;
+        }
+
+        /* Source Note */
+        .source-note {
+            text-align: center; font-size: 12px; color: #95a5a6;
+            padding: 20px 0; font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+    <div class="header">
+        <div class="progress-indicator">
+            <span>第一阶段</span>
+            <span>·</span>
+            <span>第6天/共7天</span>
+        </div>
+        <h1>成一家之言：经理人判断差异</h1>
+        <div class="subtitle">《财报就像一本故事书》第3章第4节 · P66-68</div>
+        <div class="meta">
+            <span>预计学习 30-35 分钟</span>
+            <span>核心：财务报表解读差异、大肠萎缩肥大案例、数字结构解析</span>
+        </div>
+    </div>
+
+    <!-- Nav -->
+    <div class="nav-bar">
+        <!-- 导航栏将由 _nav-loader.js 动态生成 -->
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <button onclick="toggleAll(true)">全部展开</button>
+        <button onclick="toggleAll(false)">全部收起</button>
+    </div>
+
+    <!-- Section 1: 成一家之言 -->
+    <div class="section s1 open" id="sec1">
+        <div class="section-header" onclick="toggle('sec1')">
+            <div class="left">
+                <div class="section-number">1</div>
+                <h3>成一家之言：经理人判断差异</h3>
+            </div>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="section-body">
+            <div class="section-content">
+                <p>"成一家之言"意味着不同经理人即使面对同样的财务报表信息，也可能作出截然不同的判断和决策。财务报表解读存在主观性和差异性。</p>
+                
+                <div class="insight-box">
+                    <strong>财务报表的"罗夏墨迹测验"</strong>：如同心理学中的罗夏墨迹测验，财务报表的数字和结构对不同经理人可能传递不同的信息，引发不同的商业决策。
+                </div>
+                
+                <h4>大肠萎缩与大肠肥大的诊断故事</h4>
+                <p>书中讲述了一个医学故事：两位医生看到同一个病人的X光片，一位诊断为"大肠萎缩"，另一位诊断为"大肠肥大"。同样的事实，产生了完全相反的诊断。</p>
+                
+                <div class="highlight-box">
+                    <strong>财务报表的解读差异</strong>：如同医学诊断，财务报表的解读也存在"诊断差异"。同一组财务数据，乐观的经理人看到增长机会，悲观的经理人看到风险预警。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 2: 会计数字结构的解析 -->
+    <div class="section s2" id="sec2">
+        <div class="section-header" onclick="toggle('sec2')">
+            <div class="left">
+                <div class="section-number">2</div>
+                <h3>会计数字结构的解析</h3>
+            </div>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="section-body">
+            <div class="section-content">
+                <p>财务报表中的数字不仅仅是量的表达，更重要的是它们背后的结构和关系：</p>
+                
+                <ul>
+                    <li><strong>资产负债结构</strong>：资产与负债的比例关系反映企业的财务杠杆和风险承受能力</li>
+                    <li><strong>损益结构</strong>：收入与费用的构成反映企业的盈利模式和成本控制能力</li>
+                    <li><strong>现金流量结构</strong>：经营性、投资性、融资性现金流的比例反映企业的业务发展阶段</li>
+                </ul>
+                
+                <div class="insight-box">
+                    <strong>财务报表的"音乐性"</strong>：好的财务报表如同优美的音乐，需要有合理的结构、和谐的节奏、清晰的主题。经理人需要培养"财务听力"，听懂报表背后的商业旋律。
+                </div>
+                
+                <p>通过深入分析财务报表的结构关系，经理人可以从不同角度理解企业的财务状况，形成自己独特的商业洞察，真正"成一家之言"。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Footer -->
+    <footer class="page-footer">
+        <a class="footer-nav-btn prev" href="#">← Day 5</a>
+        <a href="index.html" class="footer-nav-btn">📖 回到目录</a>
+        <a class="footer-nav-btn next" href="#">Day 7 →</a>
+    </footer>
+
+    <!-- Source Note -->
+    <div class="source-note">
+        内容来源：《财报就像一本故事书》第3章第4节，页码P66-68
+    </div>
+
+</div>
+
+<script>
+    // Toggle sections
+    function toggle(id) {
+        const section = document.getElementById(id);
+        section.classList.toggle('open');
+    }
+
+    function toggleAll(open) {
+        document.querySelectorAll('.section').forEach(s => {
+            if (open) s.classList.add('open');
+            else s.classList.remove('open');
+        });
+    }
+</script>
+
+<!-- 动态导航栏脚本 -->
+<script src="_nav-loader.js"></script>
+
+</body>
+</html>

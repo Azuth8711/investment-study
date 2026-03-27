@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 03 - 飞行中，相信你的仪表板：第2章剩余 | 财报学习日推</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: #f5f6f8;
+            color: #2c3e50;
+            line-height: 1.8;
+            min-height: 100vh;
+        }
+
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1a5276 0%, #2e86c1 100%);
+            color: #fff;
+            padding: 32px 28px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(26, 82, 118, 0.25);
+        }
+        .header .progress-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.2);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+        .header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        .header .subtitle { font-size: 15px; opacity: 0.9; }
+        .header .meta { display: flex; gap: 20px; margin-top: 16px; font-size: 13px; opacity: 0.8; }
+
+        /* Toolbar */
+        .toolbar { display: flex; justify-content: flex-end; margin-bottom: 14px; gap: 10px; }
+        .toolbar button {
+            padding: 6px 16px; border: 1px solid #d4e6f1; background: #fff;
+            border-radius: 8px; font-size: 13px; color: #2e86c1; cursor: pointer; transition: all 0.2s;
+        }
+        .toolbar button:hover { background: #eaf2f8; }
+
+        /* Section */
+        .section {
+            background: #fff; border-radius: 12px; margin-bottom: 14px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06); overflow: hidden; transition: box-shadow 0.3s;
+        }
+        .section:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .section-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 24px; cursor: pointer; user-select: none; transition: background 0.2s;
+        }
+        .section-header:hover { background: #f8f9fb; }
+        .section-header .left { display: flex; align-items: center; gap: 14px; }
+        .section-number {
+            width: 32px; height: 32px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 15px; color: #fff; flex-shrink: 0;
+        }
+        .s1 .section-number { background: #c0392b; }
+        .s2 .section-number { background: #2e86c1; }
+        .s3 .section-number { background: #27ae60; }
+        .s4 .section-number { background: #8e44ad; }
+        .s5 .section-number { background: #e67e22; }
+        .s6 .section-number { background: #16a085; }
+
+        .section-header h3 { font-size: 16px; font-weight: 600; color: #2c3e50; }
+        .section-header .arrow {
+            font-size: 14px; color: #bdc3c7; transition: transform 0.3s;
+            flex-shrink: 0; margin-left: 12px;
+        }
+        .section.open .arrow { transform: rotate(180deg); }
+        .section-body { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .section.open .section-body { max-height: 5000px; }
+        .section-content { padding: 0 24px 24px 24px; }
+
+        /* Content Styles */
+        .section-content p { margin-bottom: 12px; font-size: 15px; color: #34495e; }
+        .section-content strong { color: #1a5276; }
+        .section-content h4 {
+            font-size: 15px; color: #2c3e50; margin: 18px 0 8px 0;
+            padding-bottom: 6px; border-bottom: 1px solid #eee;
+        }
+        .section-content h4:first-child { margin-top: 0; }
+
+        /* Page Footer */
+        .page-footer {
+            display: flex; justify-content: center; align-items: center;
+            gap: 20px; padding: 30px 0; border-top: 1px solid #ecf0f1; margin-top: 20px;
+        }
+
+        /* Source Note */
+        .source-note {
+            text-align: center; font-size: 12px; color: #95a5a6;
+            padding: 20px 0; font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+    <div class="header">
+        <div class="progress-indicator">
+            <span>第一阶段</span>
+            <span>·</span>
+            <span>第3天/共7天</span>
+        </div>
+        <h1>飞行中，相信你的仪表板：第2章剩余</h1>
+        <div class="subtitle">《财报就像一本故事书》第2章（下）· P36-41</div>
+        <div class="meta">
+            <span>预计学习 35-40 分钟</span>
+            <span>核心：五大神功框架、课责性、存量与流量</span>
+        </div>
+    </div>
+
+    <!-- Nav -->
+    <div class="nav-bar">
+        <!-- 导航栏将由 _nav-loader.js 动态生成 -->
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <button onclick="toggleAll(true)">全部展开</button>
+        <button onclick="toggleAll(false)">全部收起</button>
+    </div>
+
+    <!-- Section 1: 五大神功框架 -->
+    <div class="section s1 open" id="sec1">
+        <div class="section-header" onclick="toggle('sec1')">
+            <div class="left">
+                <div class="section-number">1</div>
+                <h3>五大神功框架</h3>
+            </div>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="section-body">
+            <div class="section-content">
+                <p>第2章介绍了财务报表分析的"五大神功"框架：</p>
+                <ol>
+                    <li><strong>一个心法</strong>：诚实（财务报表的诚信基础）</li>
+                    <li><strong>两个方法</strong>：存量与流量（财务报表的基本数量关系）</li>
+                    <li><strong>三种活动</strong>：营业活动、投资活动、融资活动</li>
+                    <li><strong>四份报表</strong>：资产负债表、利润表、现金流量表、股东权益变动表</li>
+                    <li><strong>五项修炼</strong>：财务分析的核心能力</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 2: 课责性 -->
+    <div class="section s2" id="sec2">
+        <div class="section-header" onclick="toggle('sec2')">
+            <div class="left">
+                <div class="section-number">2</div>
+                <h3>课责性（Accountability）</h3>
+            </div>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="section-body">
+            <div class="section-content">
+                <p><strong>课责性</strong>是财务报表的核心价值，要求企业对股东负责。财务报表不仅是数字的集合，更是企业责任的体现。</p>
+                <p>作者引用《马太福音》中的比喻："人在最小的事上忠心，在大事上也忠心；在最小的事上不义，在大事上也不义。"这强调了诚信的重要性。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Footer -->
+    <footer class="page-footer">
+        <a class="footer-nav-btn prev" href="#">← Day 2</a>
+        <a href="index.html" class="footer-nav-btn">📖 回到目录</a>
+        <a class="footer-nav-btn next" href="#">Day 4 →</a>
+    </footer>
+
+    <!-- Source Note -->
+    <div class="source-note">
+        内容来源：《财报就像一本故事书》第2章第1-2节，页码P36-41
+    </div>
+
+</div>
+
+<script>
+    // Toggle sections
+    function toggle(id) {
+        const section = document.getElementById(id);
+        section.classList.toggle('open');
+    }
+
+    function toggleAll(open) {
+        document.querySelectorAll('.section').forEach(s => {
+            if (open) s.classList.add('open');
+            else s.classList.remove('open');
+        });
+    }
+</script>
+
+<!-- 动态导航栏脚本 -->
+<script src="_nav-loader.js"></script>
+
+</body>
+</html>

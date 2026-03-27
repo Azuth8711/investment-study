@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 04 - 究天人之际：企业与环境互动 | 财报学习日推</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: #f5f6f8;
+            color: #2c3e50;
+            line-height: 1.8;
+            min-height: 100vh;
+        }
+
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1a5276 0%, #2e86c1 100%);
+            color: #fff;
+            padding: 32px 28px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(26, 82, 118, 0.25);
+        }
+        .header .progress-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.2);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+        .header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        .header .subtitle { font-size: 15px; opacity: 0.9; }
+        .header .meta { display: flex; gap: 20px; margin-top: 16px; font-size: 13px; opacity: 0.8; }
+
+        /* Toolbar */
+        .toolbar { display: flex; justify-content: flex-end; margin-bottom: 14px; gap: 10px; }
+        .toolbar button {
+            padding: 6px 16px; border: 1px solid #d4e6f1; background: #fff;
+            border-radius: 8px; font-size: 13px; color: #2e86c1; cursor: pointer; transition: all 0.2s;
+        }
+        .toolbar button:hover { background: #eaf2f8; }
+
+        /* Section */
+        .section {
+            background: #fff; border-radius: 12px; margin-bottom: 14px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06); overflow: hidden; transition: box-shadow 0.3s;
+        }
+        .section:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .section-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 24px; cursor: pointer; user-select: none; transition: background 0.2s;
+        }
+        .section-header:hover { background: #f8f9fb; }
+        .section-header .left { display: flex; align-items: center; gap: 14px; }
+        .section-number {
+            width: 32px; height: 32px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 15px; color: #fff; flex-shrink: 0;
+        }
+        .s1 .section-number { background: #c0392b; }
+        .s2 .section-number { background: #2e86c1; }
+        .s3 .section-number { background: #27ae60; }
+        .s4 .section-number { background: #8e44ad; }
+        .s5 .section-number { background: #e67e22; }
+        .s6 .section-number { background: #16a085; }
+
+        .section-header h3 { font-size: 16px; font-weight: 600; color: #2c3e50; }
+        .section-header .arrow {
+            font-size: 14px; color: #bdc3c7; transition: transform 0.3s;
+            flex-shrink: 0; margin-left: 12px;
+        }
+        .section.open .arrow { transform: rotate(180deg); }
+        .section-body { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .section.open .section-body { max-height: 5000px; }
+        .section-content { padding: 0 24px 24px 24px; }
+
+        /* Content Styles */
+        .section-content p { margin-bottom: 12px; font-size: 15px; color: #34495e; }
+        .section-content strong { color: #1a5276; }
+        .section-content h4 {
+            font-size: 15px; color: #2c3e50; margin: 18px 0 8px 0;
+            padding-bottom: 6px; border-bottom: 1px solid #eee;
+        }
+        .section-content h4:first-child { margin-top: 0; }
+
+        .highlight-box {
+            background: #fef9e7; border-left: 4px solid #f39c12;
+            padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0;
+            font-size: 14px; color: #7d6608;
+        }
+        .insight-box {
+            background: #eaf2f8; border-left: 4px solid #2e86c1;
+            padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0;
+            font-size: 14px; color: #1a5276;
+        }
+
+        /* Page Footer */
+        .page-footer {
+            display: flex; justify-content: center; align-items: center;
+            gap: 20px; padding: 30px 0; border-top: 1px solid #ecf0f1; margin-top: 20px;
+        }
+
+        /* Source Note */
+        .source-note {
+            text-align: center; font-size: 12px; color: #95a5a6;
+            padding: 20px 0; font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+    <div class="header">
+        <div class="progress-indicator">
+            <span>第一阶段</span>
+            <span>·</span>
+            <span>第4天/共7天</span>
+        </div>
+        <h1>究天人之际：企业与环境互动</h1>
+        <div class="subtitle">《财报就像一本故事书》第3章第1-2节 · P55-61</div>
+        <div class="meta">
+            <span>预计学习 40-45 分钟</span>
+            <span>核心：企业绩效与环境互动、柯达数字化转型、长篠合战启示</span>
+        </div>
+    </div>
+
+    <!-- Nav -->
+    <div class="nav-bar">
+        <!-- 导航栏将由 _nav-loader.js 动态生成 -->
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <button onclick="toggleAll(true)">全部展开</button>
+        <button onclick="toggleAll(false)">全部收起</button>
+    </div>
+
+    <!-- Section 1: 究天人之际 -->
+    <div class="section s1 open" id="sec1">
+        <div class="section-header" onclick="toggle('sec1')">
+            <div class="left">
+                <div class="section-number">1</div>
+                <h3>究天人之际：企业绩效与环境互动</h3>
+            </div>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="section-body">
+            <div class="section-content">
+                <p>司马迁在《史记》中提出"究天人之际，通古今之变，成一家之言"的史学目标。在财务报表分析中，这同样适用：</p>
+                
+                <div class="insight-box">
+                    <strong>究天人之际</strong>：企业的财务绩效受到外在大环境（天）及企业本身（人）互动的影响。财务报表必须同时反映这两方面的因素。
+                </div>
+                
+                <p>企业不能脱离环境而存在，就像飞机不能脱离天气和地形飞行一样。财务报表就是企业的"仪表板"，帮助管理者在复杂环境中导航。</p>
+                
+                <h4>柯达数字化转型案例</h4>
+                <p>柯达公司（Eastman Kodak）是传统摄影产业的巨头，但在数字时代面临巨大挑战。2005年，柯达的财务报表显示：</p>
+                <ul>
+                    <li>数字产品的营收增加40%</li>
+                    <li>传统摄影产品则衰退了18%</li>
+                    <li>公司整体营收仅增加6%</li>
+                </ul>
+                
+                <div class="highlight-box">
+                    <strong>关键洞察</strong>：柯达的财务报表清晰地反映了产业转型的趋势。企业必须"究天人之际"——既要了解外部环境变化（数字摄影兴起），也要评估自身应对能力。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 2: 合作伙伴关系 -->
+    <div class="section s2" id="sec2">
+        <div class="section-header" onclick="toggle('sec2')">
+            <div class="left">
+                <div class="section-number">2</div>
+                <h3>合作伙伴关系的重要性</h3>
+            </div>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="section-body">
+            <div class="section-content">
+                <p>企业的成功不仅取决于自身，还取决于与合作伙伴的关系。财务报表中的"应收账款"、"应付账款"等科目，反映了企业的合作关系网络。</p>
+                
+                <h4>长篠合战的启示</h4>
+                <p>日本战国时代的长篠合战（1575年）中，织田信长与德川家康联军对抗武田胜赖。武田军虽然勇猛，但缺乏盟友支持；而织田-德川联军则形成了强大的合作关系。</p>
+                
+                <div class="insight-box">
+                    <strong>财务报表中的"盟友"</strong>：企业的应收账款代表客户关系，应付账款代表供应商关系，长期借款代表银行关系。这些"盟友"的质量直接影响企业的财务健康。
+                </div>
+                
+                <p>分析财务报表时，不仅要看数字本身，还要看数字背后的关系网络。强大的合作关系是企业应对环境变化的重要保障。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 3: 今日要点总结 -->
+    <div class="section s3" id="sec3">
+        <div class="section-header" onclick="toggle('sec3')">
+            <div class="left">
+                <div class="section-number">★</div>
+                <h3>今日要点总结</h3>
+            </div>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="section-body">
+            <div class="section-content">
+                <table style="width:100%; border-collapse: collapse; margin: 14px 0; font-size: 14px;">
+                    <tr><th style="background:#2c3e50; color:#fff; padding:10px 14px; text-align:left;">要点</th><th style="background:#2c3e50; color:#fff; padding:10px 14px; text-align:left;">内容</th></tr>
+                    <tr><td style="padding:10px 14px; border-bottom:1px solid #ecf0f1;"><strong>究天人之际</strong></td><td style="padding:10px 14px; border-bottom:1px solid #ecf0f1;">企业财务绩效受外部环境与内部能力的互动影响</td></tr>
+                    <tr style="background:#f8f9fb;"><td><strong>柯达案例</strong></td><td>数字产品营收+40%，传统产品-18%，反映产业转型趋势</td></tr>
+                    <tr><td><strong>合作伙伴关系</strong></td><td>应收账款、应付账款等反映企业的合作关系网络</td></tr>
+                    <tr style="background:#f8f9fb;"><td><strong>长篠合战启示</strong></td><td>强大的合作关系是企业应对环境变化的重要保障</td></tr>
+                    <tr><td><strong>财务报表角色</strong></td><td>企业的"仪表板"，帮助在复杂环境中导航</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Footer -->
+    <footer class="page-footer">
+        <a class="footer-nav-btn prev" href="#">← Day 3</a>
+        <a href="index.html" class="footer-nav-btn">📖 回到目录</a>
+        <a class="footer-nav-btn next" href="#">Day 5 →</a>
+    </footer>
+
+    <!-- Source Note -->
+    <div class="source-note">
+        内容来源：《财报就像一本故事书》第3章第1-2节，页码P55-61
+    </div>
+
+</div>
+
+<script>
+    // Toggle sections
+    function toggle(id) {
+        const section = document.getElementById(id);
+        section.classList.toggle('open');
+    }
+
+    function toggleAll(open) {
+        document.querySelectorAll('.section').forEach(s => {
+            if (open) s.classList.add('open');
+            else s.classList.remove('open');
+        });
+    }
+</script>
+
+<!-- 动态导航栏脚本 -->
+<script src="_nav-loader.js"></script>
+
+</body>
+</html>

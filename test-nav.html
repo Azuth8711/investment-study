@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动态导航系统测试</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 8px; }
+        .success { color: green; font-weight: bold; }
+        .error { color: red; font-weight: bold; }
+        .nav-bar { 
+            display: flex; gap: 10px; margin: 20px 0; align-items: center;
+            padding: 10px; background: #f5f5f5; border-radius: 8px;
+        }
+        .nav-bar a {
+            padding: 8px 16px; border-radius: 6px; text-decoration: none;
+            background: #fff; border: 1px solid #ddd; color: #333;
+        }
+        .nav-bar a.current { background: #e0e0e0; }
+    </style>
+</head>
+<body>
+    <h1>动态导航系统测试</h1>
+    
+    <div class="test-section">
+        <h2>测试1: 数据文件加载</h2>
+        <div id="test1">正在测试...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>测试2: 导航栏生成</h2>
+        <div class="nav-bar" id="test-nav">
+            <!-- 导航栏将在这里生成 -->
+        </div>
+        <div id="test2">正在测试...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>测试3: 页面列表</h2>
+        <div id="test3">正在测试...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>实际页面测试</h2>
+        <p>点击以下链接测试实际页面的导航栏：</p>
+        <ul>
+            <li><a href="Day_01.html" target="_blank">Day 01 - 测试导航栏</a></li>
+            <li><a href="Day_02.html" target="_blank">Day 02 - 测试导航栏</a></li>
+            <li><a href="Day_03.html" target="_blank">Day 03 - 测试导航栏</a></li>
+            <li><a href="Day_04.html" target="_blank">Day 04 - 测试导航栏</a></li>
+        </ul>
+        <p>注意：所有页面的导航栏都应该自动从 <code>_nav-data.json</code> 加载，并显示正确的"上一篇"和"下一篇"链接。</p>
+    </div>
+
+    <script>
+        // 测试1: 数据文件加载
+        fetch('_nav-data.json')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('test1').innerHTML = 
+                    `<span class="success">✓ 数据文件加载成功！</span><br>
+                     共 ${data.days.length} 个日推页面，计划总数：${data.totalPlanned}，最后更新：${data.lastUpdated}`;
+                
+                // 测试2: 导航栏生成
+                const currentDayNum = 3; // 模拟当前是Day 3
+                const currentIndex = data.days.findIndex(day => day.num === currentDayNum);
+                const currentDay = data.days[currentIndex];
+                const prevDay = currentIndex > 0 ? data.days[currentIndex - 1] : null;
+                const nextDay = currentIndex < data.days.length - 1 ? data.days[currentIndex + 1] : null;
+                
+                let navHTML = `<a href="index.html">📖 目录</a>`;
+                if (prevDay) navHTML += `<a href="${prevDay.file}">← Day ${prevDay.num}</a>`;
+                navHTML += `<a class="current">Day ${currentDayNum}</a>`;
+                if (nextDay) navHTML += `<a href="${nextDay.file}">Day ${nextDay.num} →</a>`;
+                
+                document.getElementById('test-nav').innerHTML = navHTML;
+                document.getElementById('test2').innerHTML = 
+                    `<span class="success">✓ 导航栏生成成功！</span><br>
+                     当前：Day ${currentDayNum}，上一篇：${prevDay ? `Day ${prevDay.num}` : '无'}，下一篇：${nextDay ? `Day ${nextDay.num}` : '无'}`;
+                
+                // 测试3: 页面列表
+                let pagesHTML = '<ul>';
+                data.days.forEach(day => {
+                    pagesHTML += `<li>Day ${day.num}: ${day.title} (${day.file})</li>`;
+                });
+                pagesHTML += '</ul>';
+                document.getElementById('test3').innerHTML = 
+                    `<span class="success">✓ 页面列表加载成功！</span><br>${pagesHTML}`;
+            })
+            .catch(error => {
+                document.getElementById('test1').innerHTML = 
+                    `<span class="error">✗ 数据文件加载失败: ${error.message}</span>`;
+                document.getElementById('test2').innerHTML = 
+                    `<span class="error">✗ 导航栏生成失败</span>`;
+                document.getElementById('test3').innerHTML = 
+                    `<span class="error">✗ 页面列表加载失败</span>`;
+            });
+    </script>
+    
+    <h2>工作原理说明</h2>
+    <p>这个系统的工作原理：</p>
+    <ol>
+        <li><strong>统一数据源</strong>：所有页面信息存储在 <code>_nav-data.json</code> 文件中</li>
+        <li><strong>动态加载</strong>：每个页面通过 <code>_nav-loader.js</code> 脚本动态加载导航数据</li>
+        <li><strong>自动生成</strong>：脚本根据当前页面自动生成正确的"上一篇"和"下一篇"链接</li>
+        <li><strong>同步更新</strong>：当新增页面时，只需更新 <code>_nav-data.json</code>，所有现有页面的导航栏会自动更新</li>
+    </ol>
+    
+    <p><strong>维护流程</strong>：当创建新的日推页面时：</p>
+    <ol>
+        <li>创建新的HTML文件（如 <code>Day_08.html</code>）</li>
+        <li>在 <code>_nav-data.json</code> 的 <code>days</code> 数组中添加新条目</li>
+        <li>所有现有页面的导航栏将自动包含新页面的链接</li>
+    </ol>
+</body>
+</html>

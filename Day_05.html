@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 05 - 通古今之变：企业应变能力 | 财报学习日推</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: #f5f6f8;
+            color: #2c3e50;
+            line-height: 1.8;
+            min-height: 100vh;
+        }
+
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1a5276 0%, #2e86c1 100%);
+            color: #fff;
+            padding: 32px 28px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(26, 82, 118, 0.25);
+        }
+        .header .progress-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.2);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+        .header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        .header .subtitle { font-size: 15px; opacity: 0.9; }
+        .header .meta { display: flex; gap: 20px; margin-top: 16px; font-size: 13px; opacity: 0.8; }
+
+        /* Toolbar */
+        .toolbar { display: flex; justify-content: flex-end; margin-bottom: 14px; gap: 10px; }
+        .toolbar button {
+            padding: 6px 16px; border: 1px solid #d4e6f1; background: #fff;
+            border-radius: 8px; font-size: 13px; color: #2e86c1; cursor: pointer; transition: all 0.2s;
+        }
+        .toolbar button:hover { background: #eaf2f8; }
+
+        /* Section */
+        .section {
+            background: #fff; border-radius: 12px; margin-bottom: 14px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06); overflow: hidden; transition: box-shadow 0.3s;
+        }
+        .section:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .section-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 24px; cursor: pointer; user-select: none; transition: background 0.2s;
+        }
+        .section-header:hover { background: #f8f9fb; }
+        .section-header .left { display: flex; align-items: center; gap: 14px; }
+        .section-number {
+            width: 32px; height: 32px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 15px; color: #fff; flex-shrink: 0;
+        }
+        .s1 .section-number { background: #c0392b; }
+        .s2 .section-number { background: #2e86c1; }
+        .s3 .section-number { background: #27ae60; }
+        .s4 .section-number { background: #8e44ad; }
+        .s5 .section-number { background: #e67e22; }
+        .s6 .section-number { background: #16a085; }
+
+        .section-header h3 { font-size: 16px; font-weight: 600; color: #2c3e50; }
+        .section-header .arrow {
+            font-size: 14px; color: #bdc3c7; transition: transform 0.3s;
+            flex-shrink: 0; margin-left: 12px;
+        }
+        .section.open .arrow { transform: rotate(180deg); }
+        .section-body { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .section.open .section-body { max-height: 5000px; }
+        .section-content { padding: 0 24px 24px 24px; }
+
+        /* Content Styles */
+        .section-content p { margin-bottom: 12px; font-size: 15px; color: #34495e; }
+        .section-content strong { color: #1a5276; }
+        .section-content h4 {
+            font-size: 15px; color: #2c3e50; margin: 18px 0 8px 0;
+            padding-bottom: 6px; border-bottom: 1px solid #eee;
+        }
+        .section-content h4:first-child { margin-top: 0; }
+
+        .highlight-box {
+            background: #fef9e7; border-left: 4px solid #f39c12;
+            padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0;
+            font-size: 14px; color: #7d6608;
+        }
+        .insight-box {
+            background: #eaf2f8; border-left: 4px solid #2e86c1;
+            padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0;
+            font-size: 14px; color: #1a5276;
+        }
+
+        /* Page Footer */
+        .page-footer {
+            display: flex; justify-content: center; align-items: center;
+            gap: 20px; padding: 30px 0; border-top: 1px solid #ecf0f1; margin-top: 20px;
+        }
+
+        /* Source Note */
+        .source-note {
+            text-align: center; font-size: 12px; color: #95a5a6;
+            padding: 20px 0; font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+    <div class="header">
+        <div class="progress-indicator">
+            <span>第一阶段</span>
+            <span>·</span>
+            <span>第5天/共7天</span>
+        </div>
+        <h1>通古今之变：企业应变能力</h1>
+        <div class="subtitle">《财报就像一本故事书》第3章第3节 · P62-65</div>
+        <div class="meta">
+            <span>预计学习 35-40 分钟</span>
+            <span>核心：企业竞争力与变革、华通与英特尔案例、清朝传统智慧</span>
+        </div>
+    </div>
+
+    <!-- Nav -->
+    <div class="nav-bar">
+        <!-- 导航栏将由 _nav-loader.js 动态生成 -->
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <button onclick="toggleAll(true)">全部展开</button>
+        <button onclick="toggleAll(false)">全部收起</button>
+    </div>
+
+    <!-- Section 1: 通古今之变 -->
+    <div class="section s1 open" id="sec1">
+        <div class="section-header" onclick="toggle('sec1')">
+            <div class="left">
+                <div class="section-number">1</div>
+                <h3>通古今之变：企业竞争力与变革</h3>
+            </div>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="section-body">
+            <div class="section-content">
+                <p>"通古今之变"意味着企业不能固守过去的成功模式，必须有高度的应变能力。财务报表是反映这种应变能力的重要工具。</p>
+                
+                <div class="insight-box">
+                    <strong>企业竞争力</strong>：财务报表中的毛利率、营业利润率、资产周转率等指标，反映了企业在不同时期的竞争力变化。
+                </div>
+                
+                <h4>华通电脑与英特尔案例</h4>
+                <p>台湾的华通电脑曾是英特尔奔腾（Pentium）芯片重要的印刷电路板供货商。然而，当英特尔转向新的芯片架构时，华通未能及时调整，导致业务大幅下滑。</p>
+                
+                <div class="highlight-box">
+                    <strong>财务报表预警</strong>：华通的财务报表在危机前已经显示出毛利率下降、存货周转率降低等预警信号。但管理层未能"通古今之变"，及时调整策略。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 2: 清朝传统智慧的局限性 -->
+    <div class="section s2" id="sec2">
+        <div class="section-header" onclick="toggle('sec2')">
+            <div class="left">
+                <div class="section-number">2</div>
+                <h3>清朝传统智慧的局限性</h3>
+            </div>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="section-body">
+            <div class="section-content">
+                <p>清朝末年，面对西方列强的船坚炮利，清朝官员仍坚持"祖宗之法不可变"的传统思维。这种"不通古今之变"的态度，最终导致国家的衰落。</p>
+                
+                <p>在企业经营中，同样存在"清朝思维"的陷阱：</p>
+                <ul>
+                    <li>过度依赖过去的成功经验</li>
+                    <li>忽视市场环境的变化</li>
+                    <li>对财务报表中的预警信号视而不见</li>
+                </ul>
+                
+                <div class="insight-box">
+                    <strong>财务报表的"望远镜"功能</strong>：通过分析财务报表的趋势变化，企业可以预见未来挑战，及时调整策略，避免陷入"清朝困境"。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Footer -->
+    <footer class="page-footer">
+        <a class="footer-nav-btn prev" href="#">← Day 4</a>
+        <a href="index.html" class="footer-nav-btn">📖 回到目录</a>
+        <a class="footer-nav-btn next" href="#">Day 6 →</a>
+    </footer>
+
+    <!-- Source Note -->
+    <div class="source-note">
+        内容来源：《财报就像一本故事书》第3章第3节，页码P62-65
+    </div>
+
+</div>
+
+<script>
+    // Toggle sections
+    function toggle(id) {
+        const section = document.getElementById(id);
+        section.classList.toggle('open');
+    }
+
+    function toggleAll(open) {
+        document.querySelectorAll('.section').forEach(s => {
+            if (open) s.classList.add('open');
+            else s.classList.remove('open');
+        });
+    }
+</script>
+
+<!-- 动态导航栏脚本 -->
+<script src="_nav-loader.js"></script>
+
+</body>
+</html>

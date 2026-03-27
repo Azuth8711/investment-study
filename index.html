@@ -162,73 +162,123 @@
     <div class="footer">
         <p>基于《财报就像一本故事书》刘顺仁 著 · 台湾版</p>
         <p style="margin-top:4px;">内容由 AI 辅助生成，仅供学习参考</p>
+        <div style="margin-top:12px; font-size:12px; color:#95a5a6;">
+            <button onclick="reloadData()" style="padding:4px 8px; background:#ecf0f1; border:none; border-radius:4px; cursor:pointer;">🔄 重新加载数据</button>
+            <span id="dataStatus" style="margin-left:10px;"></span>
+        </div>
     </div>
 
 </div>
 
 <script>
-    // All available days - add new days here
-    const days = [
-        {
-            num: 1,
-            title: "解读帕乔利的财富密码",
-            desc: "第1章 · 财报认知建立 · 复式记账法 · 心理会计",
-            file: "Day_01.html",
-            date: "2026-03-24"
-        },
-        {
-            num: 2,
-            title: "用财务报表锻炼五大神功",
-            desc: "第2章 · 五大神功框架 · 三类活动 · 四份报表",
-            file: "Day_02.html",
-            date: "2026-03-24"
+    // Load navigation data from unified source
+    let navData = {
+        days: [],
+        totalPlanned: 10,
+        lastUpdated: ""
+    };
+    
+    // Load nav data from JSON file
+    fetch('_nav-data.json?_t=' + new Date().getTime())
+        .then(response => response.json())
+        .then(data => {
+            navData = data;
+            console.log('成功加载导航数据，包含', navData.days.length, '个日推条目');
+            renderDayCards();
+            updateProgress();
+        })
+        .catch(error => {
+            console.error('Error loading nav data:', error);
+            // Fallback to basic data
+            navData.days = [
+                { num: 1, title: "解读帕乔利的财富密码", desc: "第1章 · 财报认知建立 · 复式记账法 · 心理会计", file: "Day_01.html", date: "2026-03-24" },
+                { num: 2, title: "用财务报表锻炼五大神功", desc: "第2章 · 五大神功框架 · 三类活动 · 四份报表", file: "Day_02.html", date: "2026-03-24" }
+            ];
+            console.log('使用后备数据，包含', navData.days.length, '个日推条目');
+            renderDayCards();
+            updateProgress();
+        });
+
+    // Render day cards
+    function renderDayCards() {
+        const cardList = document.getElementById('cardList');
+        cardList.innerHTML = ''; // Clear existing cards
+        
+        // Render available days
+        navData.days.forEach(day => {
+            const card = document.createElement('a');
+            card.className = 'day-card';
+            card.href = day.file;
+            card.innerHTML = `
+                <div class="day-num">D${day.num}</div>
+                <div class="day-info">
+                    <h3>Day ${day.num}：${day.title}</h3>
+                    <p>${day.desc}</p>
+                </div>
+                <span class="arrow">→</span>
+            `;
+            cardList.appendChild(card);
+        });
+        
+        // Add locked placeholder cards
+        const nextNum = navData.days.length > 0 ? navData.days[navData.days.length - 1].num + 1 : 1;
+        for (let i = nextNum; i <= navData.totalPlanned; i++) {
+            const card = document.createElement('div');
+            card.className = 'day-card locked';
+            card.innerHTML = `
+                <div class="day-num">D${i}</div>
+                <div class="day-info">
+                    <h3>Day ${i}：待更新</h3>
+                    <p>精彩内容筹备中...</p>
+                </div>
+                <span class="arrow">→</span>
+            `;
+            cardList.appendChild(card);
         }
-        // Add new days here:
-        // { num: 3, title: "xxx", desc: "第x章 · xxx", file: "Day_03.html", date: "2026-03-25" },
-    ];
-
-    // Total planned days for this book
-    const totalPlanned = 10;
-
-    // Render cards
-    const cardList = document.getElementById('cardList');
-    days.forEach(day => {
-        const card = document.createElement('a');
-        card.className = 'day-card';
-        card.href = day.file;
-        card.innerHTML = `
-            <div class="day-num">D${day.num}</div>
-            <div class="day-info">
-                <h3>Day ${day.num}：${day.title}</h3>
-                <p>${day.desc}</p>
-            </div>
-            <span class="arrow">→</span>
-        `;
-        cardList.appendChild(card);
-    });
-
-    // Add locked placeholder cards
-    const nextNum = days.length > 0 ? days[days.length - 1].num + 1 : 1;
-    for (let i = nextNum; i <= totalPlanned; i++) {
-        const card = document.createElement('div');
-        card.className = 'day-card locked';
-        card.innerHTML = `
-            <div class="day-num">D${i}</div>
-            <div class="day-info">
-                <h3>Day ${i}：待更新</h3>
-                <p>精彩内容筹备中...</p>
-            </div>
-            <span class="arrow">→</span>
-        `;
-        cardList.appendChild(card);
     }
 
     // Update progress
-    const completed = days.length;
-    const pct = Math.round(completed / totalPlanned * 100);
-    document.getElementById('progressFill').style.width = pct + '%';
-    document.getElementById('progressLabel').textContent = `已完成 ${completed} / ${totalPlanned} 天`;
-    document.getElementById('progressPct').textContent = pct + '%';
+    function updateProgress() {
+        const completed = navData.days.length;
+        const pct = Math.round(completed / navData.totalPlanned * 100);
+        document.querySelector('.progress-fill').style.width = pct + '%';
+        document.getElementById('progressLabel').textContent = `已完成 ${completed} / ${navData.totalPlanned} 天`;
+        document.getElementById('progressPct').textContent = pct + '%';
+        
+        // Show data status
+        document.getElementById('dataStatus').textContent = `已加载 ${completed} 个日推条目`;
+    }
+    
+    // Reload data function
+    function reloadData() {
+        console.log('手动重新加载数据...');
+        document.getElementById('dataStatus').textContent = '正在加载...';
+        
+        fetch('_nav-data.json?_t=' + new Date().getTime())
+            .then(response => {
+                console.log('响应状态:', response.status);
+                return response.json();
+            })
+            .then(data => {
+                navData = data;
+                console.log('成功重新加载数据，包含', navData.days.length, '个日推条目');
+                renderDayCards();
+                updateProgress();
+                document.getElementById('dataStatus').textContent = `已加载 ${navData.days.length} 个日推条目 (重新加载成功)`;
+            })
+            .catch(error => {
+                console.error('重新加载数据失败:', error);
+                document.getElementById('dataStatus').textContent = '重新加载失败，使用后备数据';
+                
+                // Fallback to basic data
+                navData.days = [
+                    { num: 1, title: "解读帕乔利的财富密码", desc: "第1章 · 财报认知建立 · 复式记账法 · 心理会计", file: "Day_01.html", date: "2026-03-24" },
+                    { num: 2, title: "用财务报表锻炼五大神功", desc: "第2章 · 五大神功框架 · 三类活动 · 四份报表", file: "Day_02.html", date: "2026-03-24" }
+                ];
+                renderDayCards();
+                updateProgress();
+            });
+    }
 </script>
 
 </body>
