@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>本地数据加载诊断</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test { margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        .success { color: green; }
+        .error { color: red; }
+        .warning { color: orange; }
+        pre { background: #f5f5f5; padding: 10px; border-radius: 3px; overflow: auto; }
+    </style>
+</head>
+<body>
+    <h1>本地数据加载诊断</h1>
+    <p>当前时间: <span id="currentTime"></span></p>
+    
+    <div class="test">
+        <h2>测试1: 检查_nav-data.json文件是否存在</h2>
+        <div id="test1">正在测试...</div>
+    </div>
+    
+    <div class="test">
+        <h2>测试2: 使用fetch加载_nav-data.json</h2>
+        <div id="test2">正在测试...</div>
+    </div>
+    
+    <div class="test">
+        <h2>测试3: 使用XMLHttpRequest加载_nav-data.json</h2>
+        <div id="test3">正在测试...</div>
+    </div>
+    
+    <div class="test">
+        <h2>测试4: 直接读取文件内容（模拟）</h2>
+        <div id="test4">正在测试...</div>
+    </div>
+    
+    <div class="test">
+        <h2>测试5: 检查浏览器控制台错误</h2>
+        <div id="test5">请打开浏览器开发者工具（F12）查看控制台是否有CORS或安全错误</div>
+    </div>
+    
+    <div class="test">
+        <h2>解决方案</h2>
+        <div id="solutions">
+            <h3>如果本地文件系统加载失败，可能的解决方案：</h3>
+            <ol>
+                <li><strong>使用本地HTTP服务器</strong>：在文件夹中运行 <code>python -m http.server 8000</code></li>
+                <li><strong>使用浏览器扩展</strong>：安装允许本地文件CORS的扩展</li>
+                <li><strong>修改浏览器设置</strong>：启动Chrome时添加 <code>--allow-file-access-from-files</code> 参数</li>
+                <li><strong>使用WorkBuddy产物列表</strong>：它可能已经通过HTTP服务器提供服务</li>
+            </ol>
+        </div>
+    </div>
+    
+    <script>
+        // 显示当前时间
+        document.getElementById('currentTime').textContent = new Date().toLocaleString();
+        
+        // 测试1: 检查文件是否存在
+        fetch('_nav-data.json', { method: 'HEAD' })
+            .then(response => {
+                const test1 = document.getElementById('test1');
+                if (response.ok) {
+                    test1.innerHTML = '<span class="success">✅ 文件存在</span>';
+                    test1.innerHTML += `<br>状态码: ${response.status}`;
+                } else {
+                    test1.innerHTML = `<span class="error">❌ 文件不存在或无法访问 (状态码: ${response.status})</span>`;
+                }
+            })
+            .catch(error => {
+                document.getElementById('test1').innerHTML = 
+                    `<span class="error">❌ 检查失败: ${error.message}</span>`;
+            });
+        
+        // 测试2: 使用fetch加载
+        fetch('_nav-data.json')
+            .then(response => {
+                const test2 = document.getElementById('test2');
+                if (!response.ok) {
+                    test2.innerHTML = `<span class="error">❌ HTTP错误: ${response.status} ${response.statusText}</span>`;
+                    return Promise.reject(new Error(`HTTP ${response.status}`));
+                }
+                return response.json();
+            })
+            .then(data => {
+                const test2 = document.getElementById('test2');
+                test2.innerHTML = '<span class="success">✅ 成功加载JSON数据</span>';
+                test2.innerHTML += `<br>包含 ${data.days.length} 个日推条目`;
+                test2.innerHTML += `<br>最后更新: ${data.lastUpdated}`;
+                
+                // 显示日推列表
+                let list = '<ul>';
+                data.days.forEach(day => {
+                    list += `<li>Day ${day.num}: ${day.title}</li>`;
+                });
+                list += '</ul>';
+                test2.innerHTML += list;
+            })
+            .catch(error => {
+                document.getElementById('test2').innerHTML = 
+                    `<span class="error">❌ 加载失败: ${error.message}</span>`;
+            });
+        
+        // 测试3: 使用XMLHttpRequest加载
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', '_nav-data.json', true);
+        xhr.onload = function() {
+            const test3 = document.getElementById('test3');
+            if (xhr.status === 200) {
+                try {
+                    const data = JSON.parse(xhr.responseText);
+                    test3.innerHTML = '<span class="success">✅ XMLHttpRequest成功加载数据</span>';
+                    test3.innerHTML += `<br>包含 ${data.days.length} 个日推条目`;
+                } catch (e) {
+                    test3.innerHTML = `<span class="error">❌ JSON解析失败: ${e.message}</span>`;
+                }
+            } else {
+                test3.innerHTML = `<span class="error">❌ XMLHttpRequest失败: ${xhr.status}</span>`;
+            }
+        };
+        xhr.onerror = function() {
+            document.getElementById('test3').innerHTML = 
+                '<span class="error">❌ XMLHttpRequest网络错误</span>';
+        };
+        xhr.send();
+        
+        // 测试4: 模拟解决方案
+        const test4 = document.getElementById('test4');
+        test4.innerHTML = `
+            <p><span class="warning">⚠️ 本地文件系统fetch可能被浏览器安全策略阻止</span></p>
+            <p><strong>建议解决方案：</strong></p>
+            <pre>
+# 在文件夹中启动HTTP服务器（推荐）
+cd "C:\\Users\\azuth\\WorkBuddy\\投资助手\\学习日推\\investment-study"
+python -m http.server 8000
+
+# 然后访问: http://localhost:8000/
+            </pre>
+            <p>或者使用WorkBuddy的产物列表功能，它可能已经通过HTTP服务器提供服务。</p>
+        `;
+        
+        // 检查是否有常见错误
+        setTimeout(() => {
+            const test5 = document.getElementById('test5');
+            if (test5.textContent.includes('请打开')) {
+                test5.innerHTML += '<br><span class="warning">⚠️ 如果看到CORS错误，说明需要HTTP服务器</span>';
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

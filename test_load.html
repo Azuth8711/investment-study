@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>测试数据加载</title>
+</head>
+<body>
+    <h1>测试 _nav-data.json 数据加载</h1>
+    <div id="result">正在加载...</div>
+    <div id="status"></div>
+    
+    <script>
+        // 测试用相对路径加载
+        console.log('测试相对路径加载...');
+        fetch('_nav-data.json')
+            .then(response => {
+                console.log('响应状态:', response.status);
+                document.getElementById('status').textContent = `响应状态: ${response.status}`;
+                return response.json();
+            })
+            .then(data => {
+                console.log('成功加载数据，包含', data.days.length, '个日推条目');
+                document.getElementById('result').textContent = 
+                    `成功加载数据：${data.days.length} 个日推条目`;
+                
+                // 显示所有日推
+                let html = '<h2>所有日推条目：</h2><ul>';
+                data.days.forEach(day => {
+                    html += `<li>Day ${day.num}: ${day.title}</li>`;
+                });
+                html += '</ul>';
+                document.getElementById('result').innerHTML += html;
+            })
+            .catch(error => {
+                console.error('加载失败:', error);
+                document.getElementById('result').textContent = 
+                    `加载失败: ${error.message}`;
+            });
+    </script>
+</body>
+</html>

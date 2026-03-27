@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阶段导航测试页面</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: #f5f6f8;
+            color: #2c3e50;
+            line-height: 1.8;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 800px; margin: 0 auto; }
+        
+        .test-section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        
+        .test-section h2 {
+            color: #2c3e50;
+            margin-bottom: 16px;
+            font-size: 18px;
+        }
+        
+        .test-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .test-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border: 1px solid #ecf0f1;
+            border-radius: 8px;
+        }
+        
+        .test-status {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .status-pending { background: #f39c12; color: #fff; }
+        .status-success { background: #27ae60; color: #fff; }
+        .status-error { background: #e74c3c; color: #fff; }
+        
+        .test-link {
+            color: #2e86c1;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .test-link:hover { text-decoration: underline; }
+        
+        .result-area {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 20px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .result-title {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 8px;
+        }
+        
+        .result-content {
+            font-family: monospace;
+            font-size: 13px;
+            color: #2c3e50;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="margin-bottom: 24px; color: #1a5276;">阶段导航功能测试</h1>
+        
+        <div class="test-section">
+            <h2>📂 数据文件检查</h2>
+            <div class="test-list">
+                <div class="test-item">
+                    <div class="test-status status-pending">?</div>
+                    <div>检查主导航数据文件 (_nav-data.json)</div>
+                </div>
+                <div class="test-item">
+                    <div class="test-status status-pending">?</div>
+                    <div>检查第一阶段数据文件 (_nav-data-phase1.json)</div>
+                </div>
+                <div class="test-item">
+                    <div class="test-status status-pending">?</div>
+                    <div>检查导航加载器脚本 (_nav-loader.js)</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>🔗 页面链接测试</h2>
+            <div class="test-list">
+                <div class="test-item">
+                    <div class="test-status status-pending">1</div>
+                    <div>
+                        <a href="index.html" class="test-link" target="_blank">测试主页面 (index.html)</a>
+                        <div style="font-size: 12px; color: #95a5a6; margin-top: 4px;">检查阶段切换按钮和阶段信息显示</div>
+                    </div>
+                </div>
+                <div class="test-item">
+                    <div class="test-status status-pending">2</div>
+                    <div>
+                        <a href="Day_01.html" class="test-link" target="_blank">测试第一天 (Day_01.html)</a>
+                        <div style="font-size: 12px; color: #95a5a6; margin-top: 4px;">检查基础导航栏</div>
+                    </div>
+                </div>
+                <div class="test-item">
+                    <div class="test-status status-pending">3</div>
+                    <div>
+                        <a href="Day_07.html" class="test-link" target="_blank">测试最后一天 (Day_07.html)</a>
+                        <div style="font-size: 12px; color: #95a5a6; margin-top: 4px;">检查是否显示"下一阶段"按钮</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>📊 功能验证</h2>
+            <div class="test-list">
+                <div class="test-item">
+                    <div class="test-status status-pending">A</div>
+                    <div>阶段切换按钮功能</div>
+                </div>
+                <div class="test-item">
+                    <div class="test-status status-pending">B</div>
+                    <div>导航栏阶段指示器</div>
+                </div>
+                <div class="test-item">
+                    <div class="test-status status-pending">C</div>
+                    <div>底部导航阶段链接</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="result-area">
+            <div class="result-title">测试结果</div>
+            <div class="result-content" id="testResult">测试尚未开始...</div>
+        </div>
+        
+        <div style="margin-top: 24px; text-align: center;">
+            <button onclick="runTests()" style="padding: 10px 24px; background: #2e86c1; color: #fff; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; font-weight: 500;">
+                运行所有测试
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        const testResults = {
+            files: {},
+            pages: {},
+            features: {}
+        };
+        
+        async function runTests() {
+            const resultEl = document.getElementById('testResult');
+            resultEl.textContent = '开始测试...\n\n';
+            
+            // 测试数据文件
+            resultEl.textContent += '🔍 测试数据文件...\n';
+            await testFile('_nav-data.json', '主导航数据');
+            await testFile('_nav-data-phase1.json', '第一阶段数据');
+            await testFile('_nav-loader.js', '导航加载器');
+            
+            resultEl.textContent += '\n✅ 数据文件测试完成\n\n';
+            
+            // 测试页面功能
+            resultEl.textContent += '🌐 测试页面功能...\n';
+            resultEl.textContent += '请手动点击页面链接进行测试\n';
+            resultEl.textContent += '1. 主页面 - 检查阶段切换按钮\n';
+            resultEl.textContent += '2. 第一天 - 检查基础导航栏\n';
+            resultEl.textContent += '3. 最后一天 - 检查"下一阶段"按钮\n';
+            
+            resultEl.textContent += '\n📋 测试结果摘要：\n';
+            resultEl.textContent += getTestSummary();
+        }
+        
+        async function testFile(filename, description) {
+            try {
+                const response = await fetch(filename);
+                if (response.ok) {
+                    const statusEl = document.querySelector(`[data-test="${filename}"]`);
+                    if (statusEl) {
+                        statusEl.className = 'test-status status-success';
+                        statusEl.textContent = '✓';
+                    }
+                    testResults.files[filename] = { success: true, description };
+                    document.getElementById('testResult').textContent += `  ✓ ${description} (${filename}) 存在且可访问\n`;
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                const statusEl = document.querySelector(`[data-test="${filename}"]`);
+                if (statusEl) {
+                    statusEl.className = 'test-status status-error';
+                    statusEl.textContent = '✗';
+                }
+                testResults.files[filename] = { success: false, description, error: error.message };
+                document.getElementById('testResult').textContent += `  ✗ ${description} (${filename}) 访问失败: ${error.message}\n`;
+            }
+        }
+        
+        function getTestSummary() {
+            const fileTests = Object.values(testResults.files);
+            const passedFiles = fileTests.filter(t => t.success).length;
+            const totalFiles = fileTests.length;
+            
+            return `数据文件: ${passedFiles}/${totalFiles} 通过\n`;
+        }
+        
+        // 初始化测试状态
+        document.addEventListener('DOMContentLoaded', () => {
+            const fileTests = document.querySelectorAll('.test-item');
+            fileTests.forEach((item, index) => {
+                const status = item.querySelector('.test-status');
+                if (status && status.textContent === '?') {
+                    const testText = item.textContent;
+                    if (testText.includes('_nav-data.json')) {
+                        status.dataset.test = '_nav-data.json';
+                    } else if (testText.includes('_nav-data-phase1.json')) {
+                        status.dataset.test = '_nav-data-phase1.json';
+                    } else if (testText.includes('_nav-loader.js')) {
+                        status.dataset.test = '_nav-loader.js';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
